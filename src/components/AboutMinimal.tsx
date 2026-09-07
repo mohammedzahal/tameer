@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { STATS, COMPANY } from '../data/mockData';
+import { STATS } from '../data/mockData';
 
 interface AboutMinimalProps {
   currentLang: 'en' | 'ar';

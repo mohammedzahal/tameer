@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Eye, RotateCw, Activity, Layers, Building2 } from 'lucide-react';
+import { Eye, RotateCw, Layers, Building2 } from 'lucide-react';
 
 interface Point3D {
   x: number;

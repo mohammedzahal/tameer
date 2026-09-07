@@ -74,3 +74,9 @@ export interface EstimatorState {
   deepFoundation: boolean;
   helipadOrSkydeck: boolean;
 }
+
+declare global {
+  interface Window {
+    __lenis?: import('lenis').default;
+  }
+}

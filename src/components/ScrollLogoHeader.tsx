@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Instagram, Globe, Menu, X, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MessageSquare, Instagram, Globe, Menu, X } from 'lucide-react';
 import { COMPANY } from '../data/mockData';
 
 interface ScrollLogoHeaderProps {

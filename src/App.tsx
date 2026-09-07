@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll } from 'framer-motion';
+import { useScroll } from 'framer-motion';
 import Lenis from 'lenis';
 
 import { MorphingLogo } from './components/MorphingLogo';

@@ -1,0 +1,9 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vercel
+.cache
+.vite
+.DS_Store
+*.log
