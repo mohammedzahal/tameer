@@ -20,21 +20,35 @@ export const App: React.FC = () => {
   const [initialRfpProject, setInitialRfpProject] = useState<string | undefined>(undefined);
   const [introFinished, setIntroFinished] = useState(false);
 
+  const introTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
-    // 3.0s: Video finishes drawing in center, then smoothly glides down to hero spot
-    if (!introFinished) {
-      window.scrollTo(0, 0);
-      document.body.style.overflow = 'hidden';
+    // Lock scroll and guarantee top position until intro finishes
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
     }
-    const timer = setTimeout(() => {
+    window.scrollTo(0, 0);
+    document.body.style.overflow = 'hidden';
+
+    // 3.0s fallback timer to glide down to hero if video onEnded doesn't fire
+    introTimerRef.current = setTimeout(() => {
       setIntroFinished(true);
       document.body.style.overflow = '';
     }, 3000);
+
     return () => {
-      clearTimeout(timer);
+      if (introTimerRef.current) clearTimeout(introTimerRef.current);
       document.body.style.overflow = '';
     };
-  }, [introFinished]);
+  }, []);
+
+  const handleIntroEnd = () => {
+    if (introTimerRef.current) {
+      clearTimeout(introTimerRef.current);
+    }
+    setIntroFinished(true);
+    document.body.style.overflow = '';
+  };
 
   // 🌟 Synchronized Single Source of Truth for Navbar & Morphing Logo Scroll Dynamics
   const { scrollY } = useScroll();
@@ -175,7 +189,7 @@ export const App: React.FC = () => {
         isScrolled={isScrolled} 
         isNavHidden={isNavHidden}
         introFinished={introFinished}
-        onIntroEnd={() => setIntroFinished(true)}
+        onIntroEnd={handleIntroEnd}
       />
 
       {/* Sticky Header with Intuitive Parallax Language Switch */}

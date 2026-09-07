@@ -50,13 +50,13 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
       <motion.header
         dir={isRtl ? 'rtl' : 'ltr'}
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -16 }}
         animate={{
           y: isNavHidden ? -100 : 0,
           opacity: isNavHidden ? 0 : 1,
         }}
         transition={{
-          duration: isNavHidden ? 0.35 : 0.3,
+          duration: isNavHidden ? 0.35 : 0.6,
           ease: [0.16, 1, 0.3, 1],
         }}
         style={{
