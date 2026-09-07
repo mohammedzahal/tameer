@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'fra
 
 interface HeroMinimalProps {
   currentLang: 'en' | 'ar';
+  introFinished?: boolean;
   onExplore?: () => void;
 }
 
@@ -33,7 +34,7 @@ const flapVariants = {
   },
 };
 
-export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang }) => {
+export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang, introFinished = true }) => {
   const { scrollY } = useScroll();
 
   const smoothProgress = useSpring(
@@ -68,8 +69,11 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang }) => {
             scale: headingScale,
           }}
           initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 3.0, ease: [0.16, 1, 0.3, 1] }}
+          animate={{
+            opacity: introFinished ? 1 : 0,
+            y: introFinished ? 0 : 24,
+          }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-4 max-w-3xl mx-auto w-full"
         >
           {/* Headline Container with Fixed Height & 3D Perspective */}

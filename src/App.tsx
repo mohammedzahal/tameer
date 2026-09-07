@@ -18,6 +18,15 @@ export const App: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<MinimalProject | null>(null);
   const [rfpOpen, setRfpOpen] = useState(false);
   const [initialRfpProject, setInitialRfpProject] = useState<string | undefined>(undefined);
+  const [introFinished, setIntroFinished] = useState(false);
+
+  useEffect(() => {
+    // 3.0s: Video finishes drawing in center, then smoothly glides down to hero spot
+    const timer = setTimeout(() => {
+      setIntroFinished(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // 🌟 Synchronized Single Source of Truth for Navbar & Morphing Logo Scroll Dynamics
   const { scrollY } = useScroll();
@@ -156,7 +165,9 @@ export const App: React.FC = () => {
       <MorphingLogo 
         currentLang={currentLang} 
         isScrolled={isScrolled} 
-        isNavHidden={isNavHidden} 
+        isNavHidden={isNavHidden}
+        introFinished={introFinished}
+        onIntroEnd={() => setIntroFinished(true)}
       />
 
       {/* Sticky Header with Intuitive Parallax Language Switch */}
@@ -164,6 +175,7 @@ export const App: React.FC = () => {
         currentLang={currentLang}
         isScrolled={isScrolled}
         isNavHidden={isNavHidden}
+        introFinished={introFinished}
         onToggleLang={toggleLanguage}
         onOpenRfp={() => handleOpenRfp()}
       />
@@ -173,6 +185,7 @@ export const App: React.FC = () => {
         {/* 1. Hero Section */}
         <HeroMinimal
           currentLang={currentLang}
+          introFinished={introFinished}
           onExplore={scrollToWorks}
         />
 

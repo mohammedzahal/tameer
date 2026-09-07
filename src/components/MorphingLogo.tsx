@@ -7,12 +7,16 @@ interface MorphingLogoProps {
   currentLang: 'en' | 'ar';
   isScrolled: boolean;
   isNavHidden: boolean;
+  introFinished: boolean;
+  onIntroEnd?: () => void;
 }
 
 export const MorphingLogo: React.FC<MorphingLogoProps> = ({ 
   currentLang,
   isScrolled,
   isNavHidden,
+  introFinished,
+  onIntroEnd,
 }) => {
   const [viewportWidth, setViewportWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1200
@@ -20,7 +24,6 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
   const [viewportHeight, setViewportHeight] = useState(
     typeof window !== 'undefined' ? window.innerHeight : 800
   );
-  const [introFinished, setIntroFinished] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -30,14 +33,6 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    // 3.0s: Video finishes drawing in center, then smoothly glides down to hero spot
-    const timer = setTimeout(() => {
-      setIntroFinished(true);
-    }, 3000);
-    return () => clearTimeout(timer);
   }, []);
 
   // Distance from screen center (50vw) to the target navbar slot
@@ -119,7 +114,7 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
             muted
             playsInline
             preload="auto"
-            onEnded={() => setIntroFinished(true)}
+            onEnded={() => onIntroEnd?.()}
             className="w-full h-full object-contain pointer-events-none"
           />
         </div>

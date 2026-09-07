@@ -7,6 +7,7 @@ interface ScrollLogoHeaderProps {
   currentLang: 'en' | 'ar';
   isScrolled: boolean;
   isNavHidden: boolean;
+  introFinished: boolean;
   onToggleLang: () => void;
   onOpenRfp: () => void;
 }
@@ -15,11 +16,13 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
   currentLang,
   isScrolled,
   isNavHidden,
+  introFinished,
   onToggleLang,
   onOpenRfp
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isRtl = currentLang === 'ar';
+  const showNavbar = introFinished && isScrolled;
 
   const scrollToTop = () => {
     const lenis = (window as any).__lenis;
@@ -43,18 +46,19 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
       <motion.header
         dir={isRtl ? 'rtl' : 'ltr'}
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
+        initial={{ opacity: 0, y: 0 }}
         animate={{
           y: isNavHidden ? -100 : 0,
-          opacity: isNavHidden ? 0 : 1,
+          opacity: introFinished ? (isNavHidden ? 0 : 1) : 0,
         }}
         transition={{
-          duration: isNavHidden ? 0.35 : 0.25,
+          duration: isNavHidden ? 0.35 : 0.3,
           ease: [0.16, 1, 0.3, 1],
         }}
         style={{
-          backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.95)' : 'transparent',
-          borderBottom: isScrolled ? '1px solid rgba(63, 63, 70, 0.5)' : '1px solid transparent',
-          backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+          backgroundColor: showNavbar ? 'rgba(0, 0, 0, 0.95)' : 'transparent',
+          borderBottom: showNavbar ? '1px solid rgba(63, 63, 70, 0.5)' : '1px solid transparent',
+          backdropFilter: showNavbar ? 'blur(20px)' : 'none',
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between">
@@ -73,9 +77,10 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
             {/* Brand Title slides in beside the docked emblem */}
             <motion.div
               layout
+              initial={{ opacity: 0, x: isRtl ? 10 : -10 }}
               animate={{
-                opacity: isScrolled ? 1 : 0,
-                x: isScrolled ? 0 : (isRtl ? 10 : -10),
+                opacity: showNavbar ? 1 : 0,
+                x: showNavbar ? 0 : (isRtl ? 10 : -10),
               }}
               transition={{
                 duration: 0.45,
@@ -109,7 +114,8 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
           {/* Desktop Navigation Links (Enlarged & Clearer with Swoosh) */}
           <motion.nav
             layout
-            animate={{ opacity: isScrolled ? 1 : 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: showNavbar ? 1 : 0 }}
             transition={{ 
               layout: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
               opacity: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } 
@@ -142,11 +148,12 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
           {/* Controls Container (Classy Monochrome Luxury with Layout Glide) */}
           <motion.div
             layout
+            initial={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             animate={{
-              opacity: isScrolled ? 1 : 0,
-              y: isScrolled ? 0 : -8,
-              pointerEvents: isScrolled ? 'auto' : 'none',
+              opacity: showNavbar ? 1 : 0,
+              y: showNavbar ? 0 : -8,
+              pointerEvents: showNavbar ? 'auto' : 'none',
             }}
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
