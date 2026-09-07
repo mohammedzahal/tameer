@@ -22,11 +22,19 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     // 3.0s: Video finishes drawing in center, then smoothly glides down to hero spot
+    if (!introFinished) {
+      window.scrollTo(0, 0);
+      document.body.style.overflow = 'hidden';
+    }
     const timer = setTimeout(() => {
       setIntroFinished(true);
+      document.body.style.overflow = '';
     }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = '';
+    };
+  }, [introFinished]);
 
   // 🌟 Synchronized Single Source of Truth for Navbar & Morphing Logo Scroll Dynamics
   const { scrollY } = useScroll();

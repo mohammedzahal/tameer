@@ -57,14 +57,14 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
   const heroTargetY = (viewportWidth < 640 ? 245 : 290) - viewportHeight / 2;
   const navbarTargetY = (viewportWidth < 640 ? 40 : 48) - viewportHeight / 2;
 
-  const currentX = isScrolled ? targetTranslateX : 0;
-  const currentY = isScrolled 
-    ? (isNavHidden ? navbarTargetY - 100 : navbarTargetY) 
-    : (introFinished ? heroTargetY : introTargetY);
-  const currentOpacity = isScrolled && isNavHidden ? 0 : 1;
-  const currentScale = isScrolled 
-    ? targetScale 
-    : (introFinished ? (viewportWidth < 640 ? 0.56 : 0.62) : (viewportWidth < 640 ? 0.85 : 0.92));
+  const currentX = !introFinished ? 0 : (isScrolled ? targetTranslateX : 0);
+  const currentY = !introFinished 
+    ? introTargetY 
+    : (isScrolled ? (isNavHidden ? navbarTargetY - 100 : navbarTargetY) : heroTargetY);
+  const currentOpacity = !introFinished ? 1 : (isScrolled && isNavHidden ? 0 : 1);
+  const currentScale = !introFinished 
+    ? (viewportWidth < 640 ? 0.85 : 0.92)
+    : (isScrolled ? targetScale : (viewportWidth < 640 ? 0.56 : 0.62));
 
   const handleScrollToTop = () => {
     const lenis = (window as any).__lenis;
@@ -90,6 +90,12 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
     >
       {/* 🌟 3-Stage Cinematic Motion: Grand Center during Intro -> Glides up for Hero -> Docks to Navbar on scroll */}
       <motion.div
+        initial={{
+          x: 0,
+          y: introTargetY,
+          scale: typeof window !== 'undefined' && window.innerWidth < 640 ? 0.85 : 0.92,
+          opacity: 1,
+        }}
         animate={{
           x: currentX,
           y: currentY,
