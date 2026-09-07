@@ -77,47 +77,14 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang, introFini
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="space-y-4 max-w-3xl mx-auto w-full"
           >
-          {/* Headline Container with Fixed Height & 3D Perspective */}
-          <div 
-            className="min-h-[84px] sm:min-h-[105px] md:min-h-[120px] flex items-center justify-center relative w-full"
-            style={{ perspective: '1000px' }}
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={`hero-headline-${currentLang}`}
-                variants={flapVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                style={{ transformStyle: 'preserve-3d', transformOrigin: 'center center' }}
-                className="w-full text-center"
-              >
-                {isRtl ? (
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.85rem] font-arabic font-black text-white leading-[1.45] sm:leading-[1.55]">
-                    ريادة في البناء • تميز في الإنجاز
-                  </h1>
-                ) : (
-                  <h1 className="text-2xl sm:text-3xl md:text-[2.6rem] lg:text-[3.0rem] font-heading font-black tracking-tight text-white uppercase leading-[1.3] sm:leading-[1.35]">
-                    <span className="block">ARCHITECTURE. ENGINEERING.</span>
-                    <span className="block text-zinc-200 mt-1 sm:mt-1.5">CONSTRUCTION.</span>
-                  </h1>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Subtitle Container with Fixed Height & 3D Perspective */}
-          <motion.div 
-            style={{ opacity: subtextOpacity, y: subtextY }}
-            className="min-h-[52px] sm:min-h-[48px] flex items-center justify-center relative w-full"
-          >
+            {/* Headline Container with Fixed Height & 3D Perspective */}
             <div 
-              className="w-full flex items-center justify-center"
+              className="min-h-[84px] sm:min-h-[105px] md:min-h-[120px] flex items-center justify-center relative w-full"
               style={{ perspective: '1000px' }}
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
-                  key={`hero-sub-${currentLang}`}
+                  key={`hero-headline-${currentLang}`}
                   variants={flapVariants}
                   initial="initial"
                   animate="animate"
@@ -125,22 +92,55 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang, introFini
                   style={{ transformStyle: 'preserve-3d', transformOrigin: 'center center' }}
                   className="w-full text-center"
                 >
-                  <p 
-                    className={isRtl 
-                      ? 'text-sm sm:text-base text-zinc-300 font-arabic font-normal leading-[1.8] sm:leading-[1.9] max-w-2xl mx-auto' 
-                      : 'text-sm sm:text-base text-zinc-300 font-normal leading-relaxed tracking-wide max-w-xl mx-auto'
-                    }
-                  >
-                    {isRtl
-                      ? 'مقاولات عامة متكاملة، هياكل حديدية، وتشطيبات معمارية فاخرة عبر المملكة العربية السعودية.'
-                      : 'Integrated general contracting, structural steel engineering, and architectural finishes across Saudi Arabia.'}
-                  </p>
+                  {isRtl ? (
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.85rem] font-arabic font-black text-white leading-[1.45] sm:leading-[1.55]">
+                      ريادة في البناء • تميز في الإنجاز
+                    </h1>
+                  ) : (
+                    <h1 className="text-2xl sm:text-3xl md:text-[2.6rem] lg:text-[3.0rem] font-heading font-black tracking-tight text-white uppercase leading-[1.3] sm:leading-[1.35]">
+                      <span className="block">ARCHITECTURE. ENGINEERING.</span>
+                      <span className="block text-zinc-200 mt-1 sm:mt-1.5">CONSTRUCTION.</span>
+                    </h1>
+                  )}
                 </motion.div>
               </AnimatePresence>
             </div>
+
+            {/* Subtitle Container with Fixed Height & 3D Perspective */}
+            <motion.div 
+              style={{ opacity: subtextOpacity, y: subtextY }}
+              className="min-h-[52px] sm:min-h-[48px] flex items-center justify-center relative w-full"
+            >
+              <div 
+                className="w-full flex items-center justify-center"
+                style={{ perspective: '1000px' }}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={`hero-sub-${currentLang}`}
+                    variants={flapVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    style={{ transformStyle: 'preserve-3d', transformOrigin: 'center center' }}
+                    className="w-full text-center"
+                  >
+                    <p 
+                      className={isRtl 
+                        ? 'text-sm sm:text-base text-zinc-300 font-arabic font-normal leading-[1.8] sm:leading-[1.9] max-w-2xl mx-auto' 
+                        : 'text-sm sm:text-base text-zinc-300 font-normal leading-relaxed tracking-wide max-w-xl mx-auto'
+                      }
+                    >
+                      {isRtl
+                        ? 'مقاولات عامة متكاملة، هياكل حديدية، وتشطيبات معمارية فاخرة عبر المملكة العربية السعودية.'
+                        : 'Integrated general contracting, structural steel engineering, and architectural finishes across Saudi Arabia.'}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
       </div>
     </section>
   );

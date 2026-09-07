@@ -56,7 +56,7 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
           opacity: isNavHidden ? 0 : 1,
         }}
         transition={{
-          duration: 0.45,
+          duration: isNavHidden ? 0.35 : 0.3,
           ease: [0.16, 1, 0.3, 1],
         }}
         style={{
