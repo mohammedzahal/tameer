@@ -118,11 +118,15 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
           {/* Desktop Navigation Links (Enlarged & Clearer with Swoosh) */}
           <motion.nav
             layout
-            initial={{ opacity: 0 }}
-            animate={{ opacity: showNavbar ? 1 : 0 }}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ 
+              opacity: isNavHidden ? 0 : 1,
+              y: isNavHidden ? -6 : 0,
+            }}
             transition={{ 
               layout: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
-              opacity: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } 
+              opacity: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+              y: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
             }}
             className="hidden md:flex items-center space-x-10 rtl:space-x-reverse pointer-events-auto"
           >
