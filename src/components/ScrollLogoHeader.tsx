@@ -40,19 +40,23 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
     { label: currentLang === 'ar' ? 'تواصل معنا' : 'Contact', href: '#contact' },
   ];
 
+  if (!introFinished) {
+    return null;
+  }
+
   return (
     <>
       {/* Sticky Header Bar with Instant Scroll-Up Reveal Animation */}
       <motion.header
         dir={isRtl ? 'rtl' : 'ltr'}
-        className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-opacity duration-300 ${!introFinished ? 'opacity-0 invisible pointer-events-none' : 'opacity-100'}`}
-        initial={{ opacity: 0, y: 0 }}
+        className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
+        initial={{ opacity: 0, y: -10 }}
         animate={{
           y: isNavHidden ? -100 : 0,
-          opacity: introFinished ? (isNavHidden ? 0 : 1) : 0,
+          opacity: isNavHidden ? 0 : 1,
         }}
         transition={{
-          duration: isNavHidden ? 0.35 : 0.3,
+          duration: 0.45,
           ease: [0.16, 1, 0.3, 1],
         }}
         style={{

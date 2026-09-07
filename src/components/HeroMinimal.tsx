@@ -62,20 +62,21 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang, introFini
 
       <div className="relative max-w-4xl mx-auto px-6 text-center z-10 flex flex-col items-center mt-2 w-full">
         {/* Company Title & Statement */}
-        <motion.div
-          style={{ 
-            opacity: headingOpacity, 
-            y: headingY,
-            scale: headingScale,
-          }}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{
-            opacity: introFinished ? 1 : 0,
-            y: introFinished ? 0 : 24,
-          }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className={`space-y-4 max-w-3xl mx-auto w-full transition-opacity duration-500 ${!introFinished ? 'opacity-0 invisible pointer-events-none' : 'opacity-100'}`}
-        >
+        {introFinished && (
+          <motion.div
+            style={{ 
+              opacity: headingOpacity, 
+              y: headingY,
+              scale: headingScale,
+            }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="space-y-4 max-w-3xl mx-auto w-full"
+          >
           {/* Headline Container with Fixed Height & 3D Perspective */}
           <div 
             className="min-h-[84px] sm:min-h-[105px] md:min-h-[120px] flex items-center justify-center relative w-full"
@@ -139,6 +140,7 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang, introFini
             </div>
           </motion.div>
         </motion.div>
+      )}
       </div>
     </section>
   );

@@ -171,14 +171,16 @@ export const App: React.FC = () => {
       />
 
       {/* Sticky Header with Intuitive Parallax Language Switch */}
-      <ScrollLogoHeader
-        currentLang={currentLang}
-        isScrolled={isScrolled}
-        isNavHidden={isNavHidden}
-        introFinished={introFinished}
-        onToggleLang={toggleLanguage}
-        onOpenRfp={() => handleOpenRfp()}
-      />
+      {introFinished && (
+        <ScrollLogoHeader
+          currentLang={currentLang}
+          isScrolled={isScrolled}
+          isNavHidden={isNavHidden}
+          introFinished={introFinished}
+          onToggleLang={toggleLanguage}
+          onOpenRfp={() => handleOpenRfp()}
+        />
+      )}
 
       {/* Main Minimalist Sections */}
       <main className="bg-black">
