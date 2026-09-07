@@ -45,7 +45,7 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
       {/* Sticky Header Bar with Instant Scroll-Up Reveal Animation */}
       <motion.header
         dir={isRtl ? 'rtl' : 'ltr'}
-        className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
+        className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-opacity duration-300 ${!introFinished ? 'opacity-0 invisible pointer-events-none' : 'opacity-100'}`}
         initial={{ opacity: 0, y: 0 }}
         animate={{
           y: isNavHidden ? -100 : 0,
@@ -151,9 +151,9 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
             initial={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             animate={{
-              opacity: showNavbar ? 1 : 0,
-              y: showNavbar ? 0 : -8,
-              pointerEvents: showNavbar ? 'auto' : 'none',
+              opacity: introFinished ? (isNavHidden ? 0 : 1) : 0,
+              y: introFinished ? (isNavHidden ? -8 : 0) : -8,
+              pointerEvents: introFinished && !isNavHidden ? 'auto' : 'none',
             }}
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >

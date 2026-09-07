@@ -74,7 +74,7 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang, introFini
             y: introFinished ? 0 : 24,
           }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-4 max-w-3xl mx-auto w-full"
+          className={`space-y-4 max-w-3xl mx-auto w-full transition-opacity duration-500 ${!introFinished ? 'opacity-0 invisible pointer-events-none' : 'opacity-100'}`}
         >
           {/* Headline Container with Fixed Height & 3D Perspective */}
           <div 
