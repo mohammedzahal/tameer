@@ -7,6 +7,7 @@ interface ScrollLogoHeaderProps {
   currentLang: 'en' | 'ar';
   isScrolled: boolean;
   isNavHidden: boolean;
+  introFinished?: boolean;
   onToggleLang: (e?: React.MouseEvent) => void;
   onOpenRfp: () => void;
 }
@@ -15,6 +16,7 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
   currentLang,
   isScrolled,
   isNavHidden: _isNavHidden,
+  introFinished = true,
   onToggleLang,
   onOpenRfp,
 }) => {
@@ -43,7 +45,12 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
       <motion.header
         dir={isRtl ? 'rtl' : 'ltr'}
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ 
+          opacity: introFinished ? 1 : 0, 
+          y: introFinished ? 0 : -12 
+        }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
         style={{
           backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.92)' : 'transparent',
           borderBottom: isScrolled ? '1px solid rgba(63, 63, 70, 0.4)' : '1px solid transparent',

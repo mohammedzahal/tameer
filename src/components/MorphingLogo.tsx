@@ -7,12 +7,14 @@ interface MorphingLogoProps {
   currentLang: 'en' | 'ar';
   isScrolled: boolean;
   isNavHidden: boolean;
+  introFinished?: boolean;
 }
 
 export const MorphingLogo: React.FC<MorphingLogoProps> = ({ 
   currentLang,
   isScrolled,
   isNavHidden,
+  introFinished: externalIntroFinished,
 }) => {
   const [viewportWidth, setViewportWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1200
@@ -20,7 +22,8 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
   const [viewportHeight, setViewportHeight] = useState(
     typeof window !== 'undefined' ? window.innerHeight : 800
   );
-  const [introFinished, setIntroFinished] = useState(false);
+  const [internalIntroFinished, setInternalIntroFinished] = useState(false);
+  const introFinished = externalIntroFinished !== undefined ? externalIntroFinished : internalIntroFinished;
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -35,7 +38,7 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
   useEffect(() => {
     // 3.0s: Video finishes drawing in center, then smoothly glides down to hero spot
     const timer = setTimeout(() => {
-      setIntroFinished(true);
+      setInternalIntroFinished(true);
     }, 3000);
     return () => clearTimeout(timer);
   }, []);

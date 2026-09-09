@@ -16,13 +16,21 @@ import { MinimalProject } from './data/mockData';
 
 export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<'en' | 'ar'>('ar');
+  const [introFinished, setIntroFinished] = useState(false);
   const [isLangTransitioning, setIsLangTransitioning] = useState(false);
-  const [nextLangPreview, setNextLangPreview] = useState<'en' | 'ar'>('en');
   const transitionTimerRef = useRef<{ peakTimer?: NodeJS.Timeout; endTimer?: NodeJS.Timeout }>({});
 
   const [selectedProject, setSelectedProject] = useState<MinimalProject | null>(null);
   const [rfpOpen, setRfpOpen] = useState(false);
   const [initialRfpProject, setInitialRfpProject] = useState<string | undefined>(undefined);
+
+  // 🌟 Intro Sequence Timer: 3.0s pure center logo drawing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIntroFinished(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // 🌟 Synchronized Single Source of Truth for Navbar & Morphing Logo Scroll Dynamics
   const { scrollY } = useScroll();
@@ -110,15 +118,15 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  // Pause / Resume smooth scroll when modal is active
+  // Pause / Resume smooth scroll when modal is active or during intro
   useEffect(() => {
     const lenis = (window as any).__lenis;
-    if (selectedProject || rfpOpen) {
+    if (!introFinished || selectedProject || rfpOpen) {
       lenis?.stop();
     } else {
       lenis?.start();
     }
-  }, [selectedProject, rfpOpen]);
+  }, [introFinished, selectedProject, rfpOpen]);
 
   // Synchronize HTML document dir and lang attributes
   useEffect(() => {
@@ -147,7 +155,6 @@ export const App: React.FC = () => {
     if (isLangTransitioning) return;
 
     const nextLang = currentLang === 'ar' ? 'en' : 'ar';
-    setNextLangPreview(nextLang);
     setIsLangTransitioning(true);
 
     // Calculate origin coordinates for radial particle wave
@@ -199,6 +206,7 @@ export const App: React.FC = () => {
         currentLang={currentLang} 
         isScrolled={isScrolled} 
         isNavHidden={isNavHidden} 
+        introFinished={introFinished}
       />
 
       {/* Sticky Header with Intuitive Parallax Language Switch */}
@@ -206,12 +214,18 @@ export const App: React.FC = () => {
         currentLang={currentLang}
         isScrolled={isScrolled}
         isNavHidden={isNavHidden}
+        introFinished={introFinished}
         onToggleLang={toggleLanguage}
         onOpenRfp={() => handleOpenRfp()}
       />
 
-      {/* Main Minimalist Sections */}
-      <main className="bg-black">
+      {/* Main Minimalist Sections (Materialize smoothly after 3s intro) */}
+      <motion.main 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: introFinished ? 1 : 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="bg-black"
+      >
         {/* 1. Hero Section */}
         <HeroMinimal
           currentLang={currentLang}
@@ -238,7 +252,7 @@ export const App: React.FC = () => {
           currentLang={currentLang}
           onOpenRfp={() => handleOpenRfp()}
         />
-      </main>
+      </motion.main>
 
       {/* 🌟 Cinematic Language Translation Dark Veil & Wave Atmosphere */}
       <AnimatePresence>
