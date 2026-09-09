@@ -58,20 +58,21 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
     };
 
     const resizeCanvas = () => {
-      const parent = canvas.parentElement;
-      if (!parent) return;
-      const width = parent.clientWidth;
-      const height = parent.clientHeight;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
 
       particles = [];
-      const cols = Math.floor(width / spacing) + 2;
-      const rows = Math.floor(height / spacing) + 2;
+      const cols = Math.ceil(width / spacing) + 1;
+      const rows = Math.ceil(height / spacing) + 1;
 
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
@@ -95,9 +96,8 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
     window.addEventListener('resize', resizeCanvas);
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
       mouse.isActive = true;
     };
 
@@ -113,17 +113,18 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
     // 🌟 Ultra-smooth Language Transition Wave Shockwave Trigger
     const handleLangWave = (e: Event) => {
       const customEvent = e as CustomEvent<{ clientX?: number; clientY?: number }>;
-      const rect = canvas.getBoundingClientRect();
+      const width = window.innerWidth;
+      const height = window.innerHeight;
       
-      let originX = rect.width / 2;
-      let originY = rect.height / 2;
+      let originX = width / 2;
+      let originY = height / 2;
 
       if (customEvent.detail && typeof customEvent.detail.clientX === 'number') {
-        originX = customEvent.detail.clientX - rect.left;
-        originY = (customEvent.detail.clientY ?? rect.height / 2) - rect.top;
+        originX = customEvent.detail.clientX;
+        originY = customEvent.detail.clientY ?? height / 2;
       }
 
-      const maxRadius = Math.sqrt(rect.width * rect.width + rect.height * rect.height) + 250;
+      const maxRadius = Math.sqrt(width * width + height * height) + 250;
 
       // Primary fast shockwave
       waves.push({
