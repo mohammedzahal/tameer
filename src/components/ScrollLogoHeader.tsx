@@ -7,16 +7,16 @@ interface ScrollLogoHeaderProps {
   currentLang: 'en' | 'ar';
   isScrolled: boolean;
   isNavHidden: boolean;
-  onToggleLang: () => void;
+  onToggleLang: (e?: React.MouseEvent) => void;
   onOpenRfp: () => void;
 }
 
 export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
   currentLang,
   isScrolled,
-  isNavHidden,
+  isNavHidden: _isNavHidden,
   onToggleLang,
-  onOpenRfp
+  onOpenRfp,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isRtl = currentLang === 'ar';
@@ -39,22 +39,16 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
 
   return (
     <>
-      {/* Sticky Header Bar with Instant Scroll-Up Reveal Animation */}
+      {/* Sticky Header Bar with Persistent Accessibility & Glassmorphism on Scroll */}
       <motion.header
         dir={isRtl ? 'rtl' : 'ltr'}
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
-        animate={{
-          y: isNavHidden ? -100 : 0,
-          opacity: isNavHidden ? 0 : 1,
-        }}
-        transition={{
-          duration: isNavHidden ? 0.35 : 0.25,
-          ease: [0.16, 1, 0.3, 1],
-        }}
+        animate={{ y: 0, opacity: 1 }}
         style={{
-          backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.95)' : 'transparent',
-          borderBottom: isScrolled ? '1px solid rgba(63, 63, 70, 0.5)' : '1px solid transparent',
-          backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+          backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.92)' : 'transparent',
+          borderBottom: isScrolled ? '1px solid rgba(63, 63, 70, 0.4)' : '1px solid transparent',
+          backdropFilter: isScrolled ? 'blur(16px)' : 'none',
+          transition: 'background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease',
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between">
@@ -139,26 +133,17 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
             ))}
           </motion.nav>
 
-          {/* Controls Container (Classy Monochrome Luxury with Layout Glide) */}
-          <motion.div
-            layout
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            animate={{
-              opacity: isScrolled ? 1 : 0,
-              y: isScrolled ? 0 : -8,
-              pointerEvents: isScrolled ? 'auto' : 'none',
-            }}
-            className="flex items-center space-x-3 rtl:space-x-reverse"
-          >
+          {/* Controls Container (Always On Screen, High-End Glassmorphism & Fast Accessibility) */}
+          <div className="flex items-center space-x-2.5 rtl:space-x-reverse pointer-events-auto">
             {/* WhatsApp */}
             <a
               href={COMPANY.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 sm:p-3 rounded-full border border-zinc-800 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-900 transition-all shadow-sm"
+              className="p-2 sm:p-2.5 rounded-full border border-zinc-800 bg-zinc-950/80 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-900 transition-all shadow-sm"
               title="WhatsApp"
             >
-              <MessageSquare className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              <MessageSquare className="w-4 h-4" />
             </a>
 
             {/* Instagram */}
@@ -166,45 +151,42 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
               href={COMPANY.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex p-2.5 sm:p-3 rounded-full border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-500 hover:bg-zinc-900 transition-all"
+              className="hidden sm:flex p-2 sm:p-2.5 rounded-full border border-zinc-800 bg-zinc-950/80 text-zinc-400 hover:text-white hover:border-zinc-500 hover:bg-zinc-900 transition-all"
               title="Instagram"
             >
-              <Instagram className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              <Instagram className="w-4 h-4" />
             </a>
 
-            {/* Language Switch Button */}
+            {/* 🌟 Prominent, Always-Visible Dual-Language Switch Pill */}
             <button
-              onClick={onToggleLang}
-              className="flex items-center space-x-2 rtl:space-x-reverse px-3.5 sm:px-4 py-2 rounded-full border border-zinc-800 hover:border-zinc-500 text-xs sm:text-sm font-mono text-zinc-300 hover:text-white transition-all shadow-sm active:scale-95 bg-zinc-950 overflow-hidden cursor-pointer"
-              title="Switch Language / تبديل اللغة"
+              onClick={(e) => onToggleLang(e)}
+              className="group flex items-center space-x-1.5 rtl:space-x-reverse px-3 sm:px-3.5 py-1.5 rounded-full border border-zinc-700/80 hover:border-zinc-400 bg-zinc-950/90 text-xs sm:text-sm font-mono text-zinc-200 hover:text-white transition-all shadow-md active:scale-95 cursor-pointer backdrop-blur-md"
+              title={currentLang === 'ar' ? 'Switch to English' : 'التحويل إلى العربية'}
             >
-              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-zinc-400" />
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={`lang-btn-${currentLang}`}
-                  initial={{ opacity: 0, x: isRtl ? 8 : -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: isRtl ? -8 : 8 }}
-                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-medium inline-block"
-                >
-                  {currentLang === 'en' ? 'عربي' : 'EN'}
-                </motion.span>
-              </AnimatePresence>
+              <Globe className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors shrink-0" />
+              <div className="flex items-center text-[11px] font-mono tracking-wider select-none">
+                <span className={`px-1.5 py-0.5 rounded transition-all ${currentLang === 'ar' ? 'bg-white text-black font-semibold shadow-sm' : 'text-zinc-400 hover:text-zinc-200'}`}>
+                  عربي
+                </span>
+                <span className="text-zinc-600 mx-0.5">/</span>
+                <span className={`px-1.5 py-0.5 rounded transition-all ${currentLang === 'en' ? 'bg-white text-black font-semibold shadow-sm' : 'text-zinc-400 hover:text-zinc-200'}`}>
+                  EN
+                </span>
+              </div>
             </button>
 
             {/* Inquire CTA Button - Classy Minimal */}
             <button
               onClick={onOpenRfp}
-              className="hidden sm:flex items-center px-5 py-2 sm:py-2.5 rounded-full border border-zinc-700 hover:border-white text-white font-normal uppercase text-xs sm:text-sm tracking-wider transition-all hover:bg-white/10 active:scale-95 bg-zinc-900/60 overflow-hidden cursor-pointer"
+              className="hidden sm:flex items-center px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border border-zinc-700 hover:border-white text-white font-normal uppercase text-xs sm:text-sm tracking-wider transition-all hover:bg-white/10 active:scale-95 bg-zinc-900/80 backdrop-blur-md cursor-pointer"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                   key={`inquire-btn-${currentLang}`}
-                  initial={{ opacity: 0, x: isRtl ? 10 : -10 }}
+                  initial={{ opacity: 0, x: isRtl ? 8 : -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: isRtl ? -10 : 10 }}
-                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, x: isRtl ? -8 : 8 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   className="inline-block"
                 >
                   {currentLang === 'ar' ? 'طلب عرض سعر' : 'Inquire'}
@@ -215,12 +197,11 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2.5 rounded-lg border border-zinc-800 text-zinc-300 hover:text-white"
+              className="md:hidden p-2 rounded-lg border border-zinc-800 bg-zinc-950/80 text-zinc-300 hover:text-white"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
-          </motion.div>
-
+          </div>
         </div>
       </motion.header>
 
@@ -280,3 +261,5 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
     </>
   );
 };
+
+export default ScrollLogoHeader;

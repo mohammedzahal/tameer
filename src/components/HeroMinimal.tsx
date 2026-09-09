@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { InteractiveDotDispersionCanvas } from './InteractiveDotDispersionCanvas';
 
 interface HeroMinimalProps {
   currentLang: 'en' | 'ar';
@@ -53,8 +54,11 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang }) => {
 
   return (
     <section className="relative min-h-[85vh] flex flex-col items-center justify-start pt-4 sm:pt-6 pb-16 bg-black overflow-hidden select-none">
+      {/* 🌟 Interactive Background Dot Dispersion Canvas */}
+      <InteractiveDotDispersionCanvas />
+
       {/* Subtle Ambient Radial Light */}
-      <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b from-zinc-900/20 via-zinc-950/10 to-transparent pointer-events-none" />
+      <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b from-zinc-900/20 via-zinc-950/10 to-transparent pointer-events-none z-0" />
 
       {/* Spacing for the Floating Emblem */}
       <div className="h-[360px] sm:h-[385px] md:h-[405px] w-full flex items-center justify-center pointer-events-none select-none" />

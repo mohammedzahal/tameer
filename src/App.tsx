@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useScroll } from 'framer-motion';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import Lenis from 'lenis';
 
 import { MorphingLogo } from './components/MorphingLogo';
@@ -11,10 +11,15 @@ import { ServicesMinimal } from './components/ServicesMinimal';
 import { ContactMinimal } from './components/ContactMinimal';
 import { ProjectModal } from './components/ProjectModal';
 import { RfpModal } from './components/RfpModal';
+import { CustomCursor } from './components/CustomCursor';
 import { MinimalProject } from './data/mockData';
 
 export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<'en' | 'ar'>('ar');
+  const [isLangTransitioning, setIsLangTransitioning] = useState(false);
+  const [nextLangPreview, setNextLangPreview] = useState<'en' | 'ar'>('en');
+  const transitionTimerRef = useRef<{ peakTimer?: NodeJS.Timeout; endTimer?: NodeJS.Timeout }>({});
+
   const [selectedProject, setSelectedProject] = useState<MinimalProject | null>(null);
   const [rfpOpen, setRfpOpen] = useState(false);
   const [initialRfpProject, setInitialRfpProject] = useState<string | undefined>(undefined);
@@ -138,8 +143,42 @@ export const App: React.FC = () => {
     }
   };
 
-  const toggleLanguage = () => {
-    setCurrentLang(prev => (prev === 'ar' ? 'en' : 'ar'));
+  const toggleLanguage = (e?: React.MouseEvent) => {
+    if (isLangTransitioning) return;
+
+    const nextLang = currentLang === 'ar' ? 'en' : 'ar';
+    setNextLangPreview(nextLang);
+    setIsLangTransitioning(true);
+
+    // Calculate origin coordinates for radial particle wave
+    let clientX = window.innerWidth / 2;
+    let clientY = window.innerHeight / 3;
+
+    if (e && e.clientX && e.clientY) {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    // Fire custom particle wave event to start dot wave
+    window.dispatchEvent(
+      new CustomEvent('tameer:lang-wave', {
+        detail: { clientX, clientY },
+      })
+    );
+
+    // Clear any previous timers
+    if (transitionTimerRef.current.peakTimer) clearTimeout(transitionTimerRef.current.peakTimer);
+    if (transitionTimerRef.current.endTimer) clearTimeout(transitionTimerRef.current.endTimer);
+
+    // Phase 1: At 280ms peak darkness and wave propagation, flip language content
+    transitionTimerRef.current.peakTimer = setTimeout(() => {
+      setCurrentLang(nextLang);
+    }, 280);
+
+    // Phase 2: At 650ms, fade out dark veil smoothly as dots settle back to home grid
+    transitionTimerRef.current.endTimer = setTimeout(() => {
+      setIsLangTransitioning(false);
+    }, 650);
   };
 
   const isRtl = currentLang === 'ar';
@@ -151,6 +190,9 @@ export const App: React.FC = () => {
     >
       {/* 🌟 Tactile Cinematic Film Grain Texture (Inspired by just-a-web-developer.com) */}
       <div className="fixed inset-0 pointer-events-none z-30 opacity-40 grain-overlay mix-blend-screen" />
+
+      {/* 🌟 Interactive Precision Architectural Cursor */}
+      <CustomCursor currentLang={currentLang} />
 
       {/* 🌟 Continuous Morphing Logo (Glides smoothly across navbar when language toggles) */}
       <MorphingLogo 
@@ -197,6 +239,24 @@ export const App: React.FC = () => {
           onOpenRfp={() => handleOpenRfp()}
         />
       </main>
+
+      {/* 🌟 Cinematic Language Translation Dark Veil & Wave Atmosphere */}
+      <AnimatePresence>
+        {isLangTransitioning && (
+          <motion.div
+            key="lang-transition-veil"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            style={{ willChange: 'opacity' }}
+            className="fixed inset-0 z-[60] pointer-events-none bg-black/80"
+          >
+            {/* Ambient Radial Depth Vignette */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04)_0%,rgba(0,0,0,0.85)_100%)] pointer-events-none" />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Project Inspection Modal */}
       <ProjectModal

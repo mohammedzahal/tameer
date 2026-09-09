@@ -112,7 +112,7 @@ const ServiceCard3D: React.FC<ServiceCard3DProps> = ({
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                  className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-100 transition-all duration-700 ease-out"
                 />
               </motion.div>
 

@@ -17,6 +17,13 @@ html, body {
   overflow-x: clip;
 }
 
+/* 🌟 Hide default OS cursor on desktop fine pointer devices for custom cursor */
+@media (hover: hover) and (pointer: fine) {
+  *, *::before, *::after, body, html, a, button, [role="button"], input, select, textarea {
+    cursor: none !important;
+  }
+}
+
 /* 🌟 Lenis Smooth Scrolling Engine Optimization */
 html.lenis, html.lenis body {
   height: auto;
