@@ -48,12 +48,17 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
     let particles: Particle[] = [];
     let waves: Shockwave[] = [];
 
-    const SPRING = 0.08;
-    const FRICTION = 0.85;
+    const SPRING = 0.10;
+    const FRICTION = 0.82;
 
     const mouse = {
       x: -9999,
       y: -9999,
+      prevX: -9999,
+      prevY: -9999,
+      vx: 0,
+      vy: 0,
+      intensity: 0,
       isActive: false,
     };
 
@@ -96,14 +101,28 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
     window.addEventListener('resize', resizeCanvas);
 
     const handleMouseMove = (e: MouseEvent) => {
+      const dx = mouse.prevX === -9999 ? 0 : e.clientX - mouse.prevX;
+      const dy = mouse.prevY === -9999 ? 0 : e.clientY - mouse.prevY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
       mouse.x = e.clientX;
       mouse.y = e.clientY;
+      mouse.prevX = e.clientX;
+      mouse.prevY = e.clientY;
+      mouse.vx = dx;
+      mouse.vy = dy;
+      
+      // Dynamic motion intensity: higher when moving fast, zero when still
+      mouse.intensity = Math.min(mouse.intensity + Math.min(dist / 5, 1.2), 1.5);
       mouse.isActive = true;
     };
 
     const handleMouseLeave = () => {
       mouse.x = -9999;
       mouse.y = -9999;
+      mouse.prevX = -9999;
+      mouse.prevY = -9999;
+      mouse.intensity = 0;
       mouse.isActive = false;
     };
 
@@ -112,8 +131,18 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
 
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches && e.touches.length > 0) {
-        mouse.x = e.touches[0].clientX;
-        mouse.y = e.touches[0].clientY;
+        const touch = e.touches[0];
+        const dx = mouse.prevX === -9999 ? 0 : touch.clientX - mouse.prevX;
+        const dy = mouse.prevY === -9999 ? 0 : touch.clientY - mouse.prevY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
+        mouse.prevX = touch.clientX;
+        mouse.prevY = touch.clientY;
+        mouse.vx = dx;
+        mouse.vy = dy;
+        mouse.intensity = Math.min(mouse.intensity + Math.min(dist / 5, 1.2), 1.5);
         mouse.isActive = true;
       }
     };
@@ -121,6 +150,9 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
     const handleTouchEnd = () => {
       mouse.x = -9999;
       mouse.y = -9999;
+      mouse.prevX = -9999;
+      mouse.prevY = -9999;
+      mouse.intensity = 0;
       mouse.isActive = false;
     };
 
@@ -182,6 +214,12 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
       const height = canvas.height / dpr;
       ctx.clearRect(0, 0, width, height);
 
+      // Smoothly decay mouse movement intensity when still
+      mouse.intensity *= Math.pow(0.85, delta);
+      if (mouse.intensity < 0.005) {
+        mouse.intensity = 0;
+      }
+
       // Advance shockwaves with delta time
       const waveCount = waves.length;
       if (waveCount > 0) {
@@ -195,14 +233,14 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
       for (let i = 0; i < pCount; i++) {
         const p = particles[i];
 
-        // 1. Repulsion from cursor
-        if (mouse.isActive) {
+        // 1. Repulsion only occurs when the mouse is moving
+        if (mouse.isActive && mouse.intensity > 0.005) {
           const dx = mouse.x - p.x;
           const dy = mouse.y - p.y;
           if (Math.abs(dx) < repulsionRadius && Math.abs(dy) < repulsionRadius) {
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < repulsionRadius && dist > 0) {
-              const force = (1 - dist / repulsionRadius) * maxForce * delta;
+              const force = (1 - dist / repulsionRadius) * maxForce * mouse.intensity * delta;
               const invDist = 1 / dist;
               p.vx -= dx * invDist * force;
               p.vy -= dy * invDist * force;
@@ -246,6 +284,14 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
         p.vy *= Math.pow(FRICTION, delta);
         p.x += p.vx * delta;
         p.y += p.vy * delta;
+
+        // Snap to exact origin when very close & slow to guarantee 100% stillness
+        if (Math.abs(p.x - p.originX) < 0.08 && Math.abs(p.y - p.originY) < 0.08 && Math.abs(p.vx) < 0.03 && Math.abs(p.vy) < 0.03) {
+          p.x = p.originX;
+          p.y = p.originY;
+          p.vx = 0;
+          p.vy = 0;
+        }
 
         // Wave energy decay
         if (p.waveEnergy > 0.01) {
