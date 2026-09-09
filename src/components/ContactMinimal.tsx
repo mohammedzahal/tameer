@@ -29,7 +29,7 @@ export const ContactMinimal: React.FC<ContactMinimalProps> = ({ currentLang, onO
   };
 
   return (
-    <section id="contact" className="py-20 bg-black border-t border-zinc-950 relative text-white">
+    <section id="contact" className="py-20 bg-transparent border-t border-zinc-950 relative text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

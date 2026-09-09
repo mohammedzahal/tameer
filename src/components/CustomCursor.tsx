@@ -69,6 +69,10 @@ export const CustomCursor: React.FC<CustomCursorProps> = () => {
             : 'w-8 h-8 bg-white/5 border border-white/80 shadow-[0_0_15px_rgba(255,255,255,0.3)]'
         }`}
         style={{
+          left: 0,
+          top: 0,
+          right: 'auto',
+          bottom: 'auto',
           transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
         }}
       />

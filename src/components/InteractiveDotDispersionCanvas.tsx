@@ -107,11 +107,8 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
       mouse.isActive = false;
     };
 
-    const parent = canvas.parentElement;
-    if (parent) {
-      parent.addEventListener('mousemove', handleMouseMove, { passive: true });
-      parent.addEventListener('mouseleave', handleMouseLeave, { passive: true });
-    }
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
     // 🌟 Ultra-smooth Language Transition Wave Shockwave Trigger
     const handleLangWave = (e: Event) => {
@@ -260,10 +257,8 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('tameer:lang-wave', handleLangWave);
-      if (parent) {
-        parent.removeEventListener('mousemove', handleMouseMove);
-        parent.removeEventListener('mouseleave', handleMouseLeave);
-      }
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
       cancelAnimationFrame(animationFrameId);
     };
   }, [spacing, repulsionRadius, maxForce, dotBaseAlpha]);

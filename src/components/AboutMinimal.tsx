@@ -74,10 +74,8 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
     <section 
       ref={sectionRef} 
       id="about" 
-      className="py-24 sm:py-40 bg-black border-b border-zinc-900 relative overflow-hidden text-white selection:bg-white selection:text-black"
+      className="py-24 sm:py-40 bg-transparent border-b border-zinc-900 relative overflow-hidden text-white selection:bg-white selection:text-black"
     >
-      <InteractiveDotDispersionCanvas />
-
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-zinc-900/20 blur-[180px] pointer-events-none rounded-full z-0" />
       <div className="absolute bottom-1/4 right-0 w-[600px] h-[350px] bg-white/[0.015] blur-[140px] pointer-events-none rounded-full z-0" />
 

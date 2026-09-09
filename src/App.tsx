@@ -13,6 +13,7 @@ import { ProjectModal } from './components/ProjectModal';
 import { RfpModal } from './components/RfpModal';
 import { CustomCursor } from './components/CustomCursor';
 import { MinimalProject } from './data/mockData';
+import { InteractiveDotDispersionCanvas } from './components/InteractiveDotDispersionCanvas';
 
 export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<'en' | 'ar'>('ar');
@@ -198,6 +199,9 @@ export const App: React.FC = () => {
       {/* 🌟 Tactile Cinematic Film Grain Texture (Inspired by just-a-web-developer.com) */}
       <div className="fixed inset-0 pointer-events-none z-30 opacity-40 grain-overlay mix-blend-screen" />
 
+      {/* 🌟 Global Full-Viewport Interactive Dot Dispersion Canvas (Seamless across entire website) */}
+      <InteractiveDotDispersionCanvas className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-85" />
+
       {/* 🌟 Interactive Precision Architectural Cursor */}
       <CustomCursor currentLang={currentLang} />
 
@@ -224,7 +228,7 @@ export const App: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: introFinished ? 1 : 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="bg-black"
+        className="relative z-10 bg-transparent"
       >
         {/* 1. Hero Section */}
         <HeroMinimal

@@ -575,11 +575,10 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
     <section
       id="works"
       ref={containerRef}
-      className="h-screen max-h-[100dvh] pt-3 sm:pt-5 pb-3 sm:pb-4 bg-black text-white relative overflow-hidden select-none flex flex-col justify-between"
+      className="h-screen max-h-[100dvh] pt-3 sm:pt-5 pb-3 sm:pb-4 bg-transparent text-white relative overflow-hidden select-none flex flex-col justify-between"
     >
       {/* 🌟 Atmospheric Ambient Lighting */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-zinc-800/15 blur-[170px] pointer-events-none rounded-full" />
-      <div className="absolute inset-0 bg-[radial-gradient(#3f3f46_1px,transparent_1px)] [background-size:36px_36px] opacity-[0.06] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full h-full flex flex-col justify-between">
         

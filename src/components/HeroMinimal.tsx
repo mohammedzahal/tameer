@@ -53,10 +53,7 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang }) => {
   const isRtl = currentLang === 'ar';
 
   return (
-    <section className="relative min-h-[85vh] flex flex-col items-center justify-start pt-4 sm:pt-6 pb-16 bg-black overflow-hidden select-none">
-      {/* 🌟 Interactive Background Dot Dispersion Canvas */}
-      <InteractiveDotDispersionCanvas />
-
+    <section className="relative min-h-[85vh] flex flex-col items-center justify-start pt-4 sm:pt-6 pb-16 bg-transparent overflow-hidden select-none">
       {/* Subtle Ambient Radial Light */}
       <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b from-zinc-900/20 via-zinc-950/10 to-transparent pointer-events-none z-0" />
 
