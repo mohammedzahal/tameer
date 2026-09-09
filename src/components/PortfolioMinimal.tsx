@@ -42,7 +42,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { damping: 26, stiffness: 200 };
+  const springConfig = { damping: 20, stiffness: 350 };
   const hoverRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), springConfig);
   const hoverRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), springConfig);
   const sheenX = useSpring(useTransform(mouseX, [-0.5, 0.5], [10, 90]), springConfig);
@@ -98,9 +98,9 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({
       }}
       transition={{
         type: 'spring',
-        stiffness: 300,
-        damping: 28,
-        mass: 0.5,
+        stiffness: 550,
+        damping: 36,
+        mass: 0.3,
       }}
       style={{
         width: cardWidth,
@@ -109,7 +109,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({
         transformStyle: 'preserve-3d',
         transformPerspective: 1400,
       }}
-      className={`relative shrink-0 h-[310px] sm:h-[350px] md:h-[390px] lg:h-[425px] rounded-3xl overflow-hidden cursor-pointer select-none group flex flex-col justify-between transition-all duration-300 ${
+      className={`relative shrink-0 h-[285px] sm:h-[350px] md:h-[390px] lg:h-[425px] rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer select-none group flex flex-col justify-between transition-all duration-200 ${
         isActive
           ? 'bg-zinc-950 shadow-[0_30px_100px_-15px_rgba(0,0,0,1),0_0_60px_rgba(255,255,255,0.06)]'
           : 'bg-zinc-950/80 shadow-[0_20px_50px_rgba(0,0,0,0.85)]'
@@ -121,7 +121,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({
           x: imageParallaxOffset,
           scale: isActive ? 1.05 : 1.15,
         }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
         className="absolute inset-[-10%] w-[120%] h-[120%] will-change-transform z-0"
       >
         <img
@@ -212,7 +212,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({
             className="px-3 sm:px-4 py-1.5 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 shadow-xl flex items-center space-x-1.5 rtl:space-x-reverse shrink-0 group/btn cursor-pointer"
           >
             <span>{currentLang === 'ar' ? 'استعراض' : 'Explore'}</span>
-            <ArrowUpRight className={`w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 ${isRtl ? 'rotate-[-90deg]' : ''}`} />
+            <ArrowUpRight className={`w-3.5 h-3.5 transition-transform ${isRtl ? 'rotate-[-90deg] group-hover/btn:-translate-x-0.5 group-hover/btn:-translate-y-0.5' : 'group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5'}`} />
           </button>
         </div>
 
@@ -223,7 +223,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({
             animate={{
               width: isActive ? '100%' : '0%',
             }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
           />
         </div>
       </div>
@@ -337,12 +337,12 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
       // 1. Approach from above (scrolling down into works)
       if (scrollingDown && rect.top <= 80 && rect.top >= -80) {
         isLocked.current = true;
-        lockGraceUntil.current = Date.now() + 450; // Absorb approach inertia
+        lockGraceUntil.current = Date.now() + 180; // Fast absorb approach inertia
         const targetY = section.offsetTop;
 
         if (Math.abs(rect.top) > 4 && lenis) {
           lenis.scrollTo(targetY, {
-            duration: 0.5,
+            duration: 0.35,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             onComplete: () => {
               lenis?.stop();
@@ -357,12 +357,12 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
       // 2. Approach from below (scrolling up into works)
       else if (scrollingUp && rect.top >= -80 && rect.top <= 80) {
         isLocked.current = true;
-        lockGraceUntil.current = Date.now() + 450; // Absorb approach inertia
+        lockGraceUntil.current = Date.now() + 180; // Fast absorb approach inertia
         const targetY = section.offsetTop;
 
         if (Math.abs(rect.top) > 4 && lenis) {
           lenis.scrollTo(targetY, {
-            duration: 0.5,
+            duration: 0.35,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             onComplete: () => {
               lenis?.stop();
@@ -394,9 +394,9 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
       // Absorb lingering scroll inertia on landing
       if (now < lockGraceUntil.current) return;
 
-      if (Math.abs(e.deltaY) < 18) return;
+      if (Math.abs(e.deltaY) < 14) return;
 
-      const COOLDOWN_MS = 280;
+      const COOLDOWN_MS = 140;
       if (now - lastTriggerTime.current < COOLDOWN_MS) return;
 
       const lenis = (window as any).__lenis;
@@ -417,14 +417,14 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
           lenis?.start();
           lenis?.scrollTo('#services', {
             offset: 0,
-            duration: 1.1,
+            duration: 0.65,
             onComplete: () => {
               isTransitioning.current = false;
             },
           });
           setTimeout(() => {
             isTransitioning.current = false;
-          }, 1200);
+          }, 700);
         }
       } else if (e.deltaY < 0) {
         // Scrolling up -> Move to previous project
@@ -441,14 +441,14 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
           lenis?.start();
           lenis?.scrollTo('#about', {
             offset: -20,
-            duration: 1.1,
+            duration: 0.65,
             onComplete: () => {
               isTransitioning.current = false;
             },
           });
           setTimeout(() => {
             isTransitioning.current = false;
-          }, 1200);
+          }, 700);
         }
       }
     };
@@ -478,8 +478,8 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
       const diffY = touchStartY - touchEndY;
 
       // Check if horizontal or vertical swipe dominates
-      if (Math.abs(diffX) > 30 || Math.abs(diffY) > 30) {
-        const isNext = isRtl ? diffX < -30 || diffY > 30 : diffX > 30 || diffY > 30;
+      if (Math.abs(diffX) > 24 || Math.abs(diffY) > 24) {
+        const isNext = isRtl ? diffX < -24 || diffY > 24 : diffX > 24 || diffY > 24;
         const total = filteredProjectsRef.current.length;
         const lenis = (window as any).__lenis;
 
@@ -494,14 +494,14 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
             lenis?.start();
             lenis?.scrollTo('#services', {
               offset: 0,
-              duration: 1.1,
+              duration: 0.65,
               onComplete: () => {
                 isTransitioning.current = false;
               },
             });
             setTimeout(() => {
               isTransitioning.current = false;
-            }, 1200);
+            }, 700);
           }
         } else {
           if (currentIndexRef.current > 0) {
@@ -514,14 +514,14 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
             lenis?.start();
             lenis?.scrollTo('#about', {
               offset: -20,
-              duration: 1.1,
+              duration: 0.65,
               onComplete: () => {
                 isTransitioning.current = false;
               },
             });
             setTimeout(() => {
               isTransitioning.current = false;
-            }, 1200);
+            }, 700);
           }
         }
       }
@@ -559,35 +559,33 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
-        if (isRtl) handleNext();
-        else handlePrev();
+        handlePrev();
       } else if (e.key === 'ArrowRight') {
-        if (isRtl) handlePrev();
-        else handleNext();
+        handleNext();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNext, handlePrev, isRtl]);
+  }, [handleNext, handlePrev]);
 
   return (
     <section
       id="works"
       ref={containerRef}
-      className="h-screen max-h-[100dvh] pt-3 sm:pt-5 pb-3 sm:pb-4 bg-transparent text-white relative overflow-hidden select-none flex flex-col justify-between"
+      className="h-screen max-h-[100dvh] pt-2 sm:pt-5 pb-2 sm:pb-4 bg-transparent text-white relative overflow-hidden select-none flex flex-col justify-between"
     >
       {/* 🌟 Atmospheric Ambient Lighting */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-zinc-800/15 blur-[170px] pointer-events-none rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full h-full flex flex-col justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10 w-full h-full flex flex-col justify-between">
         
         {/* 🌟 Compact Section Header with Category Filter Tabs & Tactile Arrows */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-2 gap-2 shrink-0">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-1 sm:pb-2 gap-1.5 sm:gap-2 shrink-0">
           <div className="space-y-0.5">
             <div
               className={`flex items-center space-x-2 rtl:space-x-reverse ${
-                isRtl ? 'text-[11px] font-arabic font-semibold text-zinc-400' : 'text-[11px] font-mono font-bold text-zinc-400 uppercase tracking-[0.25em]'
+                isRtl ? 'text-[10px] sm:text-[11px] font-arabic font-semibold text-zinc-400' : 'text-[10px] sm:text-[11px] font-mono font-bold text-zinc-400 uppercase tracking-[0.25em]'
               }`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
@@ -597,8 +595,8 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
             <h2
               className={
                 isRtl
-                  ? 'text-base sm:text-lg lg:text-xl font-arabic font-black text-white leading-tight'
-                  : 'text-lg sm:text-xl lg:text-2xl font-heading font-black text-white tracking-tight uppercase leading-tight'
+                  ? 'text-sm sm:text-lg lg:text-xl font-arabic font-black text-white leading-tight'
+                  : 'text-base sm:text-xl lg:text-2xl font-heading font-black text-white tracking-tight uppercase leading-tight'
               }
             >
               {currentLang === 'ar' ? 'صروح معمارية بأعلى معايير الإتقان' : 'Engineered Landmarks & Monoliths'}
@@ -606,16 +604,16 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
           </div>
 
           {/* Controls Bar: Category Filters & Tactile Carousel Arrows */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             {/* Category Pills (Borderless Frosted Buttons) */}
-            <div className="flex flex-wrap items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
               {categories.map((cat) => {
                 const active = selectedFilter === cat.id;
                 return (
                   <button
                     key={cat.id}
                     onClick={() => handleFilterChange(cat.id)}
-                    className={`relative px-3.5 py-1 rounded-full transition-all duration-300 cursor-pointer text-[10px] sm:text-[11px] ${
+                    className={`relative px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full transition-all duration-300 cursor-pointer text-[9px] sm:text-[11px] ${
                       isRtl ? 'font-arabic font-medium' : 'font-mono font-bold tracking-wider uppercase'
                     } ${
                       active
@@ -637,18 +635,18 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
             </div>
 
             {/* Tactile Previous / Next Buttons (Borderless Frosted Pill) */}
-            <div className="flex items-center space-x-1 rtl:space-x-reverse rounded-full p-0.5 bg-zinc-900/70 backdrop-blur-md shadow-md">
+            <div dir="ltr" className="flex items-center space-x-1 rounded-full p-0.5 bg-zinc-900/70 backdrop-blur-md shadow-md">
               <button
-                onClick={isRtl ? handleNext : handlePrev}
+                onClick={handlePrev}
                 className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer"
-                title={isRtl ? 'التالي' : 'Previous'}
+                title={currentLang === 'ar' ? 'السابق' : 'Previous'}
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
               <button
-                onClick={isRtl ? handlePrev : handleNext}
+                onClick={handleNext}
                 className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer"
-                title={isRtl ? 'السابق' : 'Next'}
+                title={currentLang === 'ar' ? 'التالي' : 'Next'}
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -671,9 +669,9 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
             }}
             transition={{
               type: 'spring',
-              stiffness: 300,
-              damping: 28,
-              mass: 0.5,
+              stiffness: 550,
+              damping: 36,
+              mass: 0.3,
             }}
             style={{
               gap: `${gap}px`,
@@ -716,14 +714,14 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
           </div>
 
           {/* Interactive Dynamic Progress Segments */}
-          <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
+          <div dir="ltr" className="flex items-center space-x-1.5">
             {filteredProjects.map((_, idx) => {
               const isActive = idx === currentIndex;
               return (
                 <button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
-                  className={`relative h-1.5 rounded-full transition-all duration-400 cursor-pointer overflow-hidden ${
+                  className={`relative h-1.5 rounded-full transition-all duration-200 cursor-pointer overflow-hidden ${
                     isActive ? 'w-8 bg-zinc-800' : 'w-2 bg-zinc-900 hover:bg-zinc-700'
                   }`}
                   title={`Project ${idx + 1}`}
@@ -732,7 +730,7 @@ export const PortfolioMinimal: React.FC<PortfolioMinimalProps> = ({ currentLang,
                     <motion.div
                       layoutId="activeScrubber"
                       className="absolute inset-0 bg-white rounded-full shadow-sm"
-                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     />
                   )}
                 </button>

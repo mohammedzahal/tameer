@@ -45,7 +45,7 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
 
   // Distance from screen center (50vw) to the target navbar slot
   const maxContentWidth = 1280;
-  const horizontalPadding = viewportWidth < 640 ? 16 : (viewportWidth < 1024 ? 24 : 32);
+  const horizontalPadding = viewportWidth < 640 ? 12 : (viewportWidth < 1024 ? 24 : 32);
   const edgeDistance = Math.max(
     horizontalPadding,
     (viewportWidth - maxContentWidth) / 2 + horizontalPadding
@@ -54,16 +54,16 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
   // In RTL (Arabic), the logo docks on the TOP-RIGHT corner (+X)
   // In LTR (English), the logo docks on the TOP-LEFT corner (-X)
   const isRtl = currentLang === 'ar';
-  const logoCenterOffset = viewportWidth < 640 ? 38 : 46;
+  const logoCenterOffset = viewportWidth < 640 ? 30 : 46;
   const deltaX = viewportWidth / 2 - edgeDistance - logoCenterOffset;
   const targetTranslateX = isRtl ? deltaX : -deltaX;
-  const targetScale = viewportWidth < 640 ? 0.22 : 0.205;
+  const targetScale = viewportWidth < 640 ? 0.17 : 0.205;
 
   // Exact vertical targets relative to screen vertical center (50vh)
   // Shifted downward for balanced, spacious placement
-  const introTargetY = 28;
-  const heroTargetY = (viewportWidth < 640 ? 245 : 290) - viewportHeight / 2;
-  const navbarTargetY = (viewportWidth < 640 ? 40 : 48) - viewportHeight / 2;
+  const introTargetY = viewportWidth < 640 ? 15 : 28;
+  const heroTargetY = (viewportWidth < 640 ? 215 : 290) - viewportHeight / 2;
+  const navbarTargetY = (viewportWidth < 640 ? 32 : 48) - viewportHeight / 2;
 
   const currentX = isScrolled ? targetTranslateX : 0;
   const currentY = isScrolled 
@@ -72,7 +72,7 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
   const currentOpacity = isScrolled && isNavHidden ? 0 : 1;
   const currentScale = isScrolled 
     ? targetScale 
-    : (introFinished ? (viewportWidth < 640 ? 0.56 : 0.62) : (viewportWidth < 640 ? 0.85 : 0.92));
+    : (introFinished ? (viewportWidth < 640 ? 0.48 : 0.62) : (viewportWidth < 640 ? 0.76 : 0.92));
 
   const handleScrollToTop = () => {
     const lenis = (window as any).__lenis;
@@ -114,7 +114,7 @@ export const MorphingLogo: React.FC<MorphingLogoProps> = ({
         className="pointer-events-auto cursor-pointer group flex items-center justify-center relative"
         title="TAMEER Group - Return to top"
       >
-        <div className="relative w-[220px] h-[330px] sm:w-[260px] sm:h-[390px] md:w-[300px] md:h-[450px] flex items-center justify-center pointer-events-none">
+        <div className="relative w-[190px] h-[285px] sm:w-[260px] sm:h-[390px] md:w-[300px] md:h-[450px] flex items-center justify-center pointer-events-none">
           <video
             ref={videoRef}
             src={logoVideo}

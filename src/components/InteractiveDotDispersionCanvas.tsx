@@ -110,6 +110,24 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches && e.touches.length > 0) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+        mouse.isActive = true;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+      mouse.isActive = false;
+    };
+
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchstart', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+
     // 🌟 Ultra-smooth Language Transition Wave Shockwave Trigger
     const handleLangWave = (e: Event) => {
       const customEvent = e as CustomEvent<{ clientX?: number; clientY?: number }>;
@@ -153,17 +171,22 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
 
     window.addEventListener('tameer:lang-wave', handleLangWave);
 
-    const render = () => {
+    let lastTime = performance.now();
+
+    const render = (time: number) => {
+      const delta = Math.min((time - lastTime) / 16.67, 1.8) || 1.0;
+      lastTime = time;
+
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const width = canvas.width / dpr;
       const height = canvas.height / dpr;
       ctx.clearRect(0, 0, width, height);
 
-      // Advance shockwaves
+      // Advance shockwaves with delta time
       const waveCount = waves.length;
       if (waveCount > 0) {
         for (let w = 0; w < waveCount; w++) {
-          waves[w].radius += waves[w].speed;
+          waves[w].radius += waves[w].speed * delta;
         }
         waves = waves.filter((w) => w.radius <= w.maxRadius);
       }
@@ -179,7 +202,7 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
           if (Math.abs(dx) < repulsionRadius && Math.abs(dy) < repulsionRadius) {
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < repulsionRadius && dist > 0) {
-              const force = (1 - dist / repulsionRadius) * maxForce;
+              const force = (1 - dist / repulsionRadius) * maxForce * delta;
               const invDist = 1 / dist;
               p.vx -= dx * invDist * force;
               p.vy -= dy * invDist * force;
@@ -204,7 +227,7 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
                 const diff = Math.abs(wdist - wave.radius);
                 const progress = 1 - (wave.radius / wave.maxRadius);
                 const wavePhase = (Math.PI / 2) * (1 - diff / wave.wavelength);
-                const waveForce = Math.sin(wavePhase * 2) * wave.amplitude * Math.max(progress, 0.2);
+                const waveForce = Math.sin(wavePhase * 2) * wave.amplitude * Math.max(progress, 0.2) * delta;
 
                 const invWdist = 1 / wdist;
                 p.vx += wdx * invWdist * waveForce * 0.32;
@@ -216,17 +239,17 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
           }
         }
 
-        // 3. Spring physics back to home grid
-        p.vx += (p.originX - p.x) * SPRING;
-        p.vy += (p.originY - p.y) * SPRING;
-        p.vx *= FRICTION;
-        p.vy *= FRICTION;
-        p.x += p.vx;
-        p.y += p.vy;
+        // 3. Spring physics back to home grid with delta smoothing
+        p.vx += (p.originX - p.x) * SPRING * delta;
+        p.vy += (p.originY - p.y) * SPRING * delta;
+        p.vx *= Math.pow(FRICTION, delta);
+        p.vy *= Math.pow(FRICTION, delta);
+        p.x += p.vx * delta;
+        p.y += p.vy * delta;
 
         // Wave energy decay
         if (p.waveEnergy > 0.01) {
-          p.waveEnergy *= 0.93;
+          p.waveEnergy *= Math.pow(0.93, delta);
         } else {
           p.waveEnergy = 0;
         }
@@ -253,13 +276,16 @@ export const InteractiveDotDispersionCanvas: React.FC<InteractiveDotDispersionCa
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('tameer:lang-wave', handleLangWave);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchstart', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
       cancelAnimationFrame(animationFrameId);
     };
   }, [spacing, repulsionRadius, maxForce, dotBaseAlpha]);

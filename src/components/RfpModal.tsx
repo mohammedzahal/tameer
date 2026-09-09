@@ -188,7 +188,7 @@ export const RfpModal: React.FC<RfpModalProps> = ({
                     type="submit"
                     className="flex-1 w-full py-3 rounded-full border border-zinc-700 hover:border-white text-zinc-200 hover:text-white font-light uppercase tracking-wider text-xs flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all"
                   >
-                    <Send className="w-3.5 h-3.5" />
+                    <Send className={`w-3.5 h-3.5 ${isRtl ? 'scale-x-[-1]' : ''}`} />
                     <span>{currentLang === 'ar' ? 'إرسال الطلب' : 'Submit RFP'}</span>
                   </button>
 

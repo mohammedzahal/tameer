@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, startTransition } from 'react';
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import Lenis from 'lenis';
 
@@ -178,15 +178,17 @@ export const App: React.FC = () => {
     if (transitionTimerRef.current.peakTimer) clearTimeout(transitionTimerRef.current.peakTimer);
     if (transitionTimerRef.current.endTimer) clearTimeout(transitionTimerRef.current.endTimer);
 
-    // Phase 1: At 280ms peak darkness and wave propagation, flip language content
+    // Phase 1: At 200ms when veil is fully opaque, flip language concurrently
     transitionTimerRef.current.peakTimer = setTimeout(() => {
-      setCurrentLang(nextLang);
-    }, 280);
+      startTransition(() => {
+        setCurrentLang(nextLang);
+      });
+    }, 200);
 
-    // Phase 2: At 650ms, fade out dark veil smoothly as dots settle back to home grid
+    // Phase 2: At 520ms, fade out dark veil smoothly as dots settle back to home grid
     transitionTimerRef.current.endTimer = setTimeout(() => {
       setIsLangTransitioning(false);
-    }, 650);
+    }, 520);
   };
 
   const isRtl = currentLang === 'ar';

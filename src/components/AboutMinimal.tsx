@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { STATS } from '../data/mockData';
-import { InteractiveDotDispersionCanvas } from './InteractiveDotDispersionCanvas';
 
 interface AboutMinimalProps {
   currentLang: 'en' | 'ar';
@@ -13,7 +12,7 @@ interface AnimatedWordProps {
   range: [number, number];
 }
 
-const AnimatedWord: React.FC<AnimatedWordProps> = ({ word, progress, range }) => {
+const AnimatedWord: React.FC<AnimatedWordProps> = React.memo(({ word, progress, range }) => {
   const opacity = useTransform(progress, range, [0.18, 1]);
   const y = useTransform(progress, range, [6, 0]);
   return (
@@ -21,7 +20,7 @@ const AnimatedWord: React.FC<AnimatedWordProps> = ({ word, progress, range }) =>
       {word}
     </motion.span>
   );
-};
+});
 
 export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
   const isRtl = currentLang === 'ar';
@@ -43,8 +42,8 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
   const paragraphEn1 = "Tameer AlMesaha General Contracting is a premier 100% Saudi national establishment headquartered in Dammam, setting elevated engineering benchmarks in the construction of commercial towers, residential communities, and industrial facilities.";
   const paragraphEn2 = "We bring specialized regional expertise in Eastern Province geotechnical conditions—ranging from high coastal water tables, dewatering systems, and advanced waterproofing to reinforced concrete casting and pre-engineered structural steel, strictly aligned with the Saudi Building Code (SBC) and Vision 2030.";
 
-  const words1 = (isRtl ? paragraphAr1 : paragraphEn1).split(' ');
-  const words2 = (isRtl ? paragraphAr2 : paragraphEn2).split(' ');
+  const words1 = useMemo(() => (isRtl ? paragraphAr1 : paragraphEn1).split(' '), [isRtl]);
+  const words2 = useMemo(() => (isRtl ? paragraphAr2 : paragraphEn2).split(' '), [isRtl]);
 
   const pillars = [
     {
@@ -74,27 +73,27 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
     <section 
       ref={sectionRef} 
       id="about" 
-      className="py-24 sm:py-40 bg-transparent border-b border-zinc-900 relative overflow-hidden text-white selection:bg-white selection:text-black"
+      className="py-16 sm:py-40 bg-transparent border-b border-zinc-900 relative overflow-hidden text-white selection:bg-white selection:text-black"
     >
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-zinc-900/20 blur-[180px] pointer-events-none rounded-full z-0" />
       <div className="absolute bottom-1/4 right-0 w-[600px] h-[350px] bg-white/[0.015] blur-[140px] pointer-events-none rounded-full z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="flex items-center space-x-2.5 rtl:space-x-reverse mb-8">
+        <div className="flex items-center space-x-2.5 rtl:space-x-reverse mb-6 sm:mb-8">
           <span className="w-2 h-2 bg-white" />
           <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-[0.3em]">
             01 • {isRtl ? 'عن مؤسسة تعمير المساحة للمقاولات' : 'About Tameer AlMesaha'}
           </span>
         </div>
 
-        <div className="max-w-5xl mb-16 sm:mb-28">
+        <div className="max-w-5xl mb-12 sm:mb-28">
           <motion.h2
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            className={`text-2xl sm:text-4xl lg:text-5xl font-black text-white ${
+            className={`text-xl sm:text-4xl lg:text-5xl font-black text-white ${
               isRtl ? 'font-arabic leading-[1.35]' : 'font-heading tracking-tight uppercase leading-[1.15]'
             }`}
           >
@@ -104,13 +103,13 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center mb-28 sm:mb-44">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-16 items-center mb-16 sm:mb-44">
           
           <motion.div 
             style={{ y: imageParallax1 }}
             className="lg:col-span-6 order-1"
           >
-            <div className="relative aspect-[16/11] sm:aspect-[16/10] overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl group select-none">
+            <div className="relative aspect-[16/11] sm:aspect-[16/10] rounded-xl sm:rounded-none overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl group select-none">
               <div className="absolute top-2.5 left-2.5 text-xs font-mono text-zinc-600 group-hover:text-white transition-colors duration-500 z-20 pointer-events-none select-none">+</div>
               <div className="absolute top-2.5 right-2.5 text-xs font-mono text-zinc-600 group-hover:text-white transition-colors duration-500 z-20 pointer-events-none select-none">+</div>
               <div className="absolute bottom-2.5 left-2.5 text-xs font-mono text-zinc-600 group-hover:text-white transition-colors duration-500 z-20 pointer-events-none select-none">+</div>
@@ -129,13 +128,13 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
             </div>
           </motion.div>
 
-          <div className="lg:col-span-6 order-2 space-y-6 lg:pl-4 rtl:lg:pl-0 rtl:lg:pr-4">
-            <div className="text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">
+          <div className="lg:col-span-6 order-2 space-y-4 sm:space-y-6 lg:pl-4 rtl:lg:pl-0 rtl:lg:pr-4">
+            <div className="text-[11px] sm:text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">
               {isRtl ? 'الخبرة الميدانية والامتداد الجغرافي' : 'Regional Mastery & Field Operations'}
             </div>
 
-            <div className={`text-base sm:text-lg lg:text-2xl text-zinc-100 font-normal ${
-              isRtl ? 'font-arabic leading-[2.2]' : 'font-sans leading-relaxed'
+            <div className={`text-sm sm:text-lg lg:text-2xl text-zinc-100 font-normal ${
+              isRtl ? 'font-arabic leading-[2.0] sm:leading-[2.2]' : 'font-sans leading-relaxed'
             }`}>
               {words1.map((word, idx) => {
                 const total = words1.length;
@@ -152,22 +151,22 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
               })}
             </div>
 
-            <div className="pt-2 flex items-center space-x-3 rtl:space-x-reverse text-xs sm:text-sm font-mono text-zinc-400">
-              <span className="w-1.5 h-1.5 bg-white" />
+            <div className="pt-2 flex items-center space-x-2 sm:space-x-3 rtl:space-x-reverse text-[11px] sm:text-sm font-mono text-zinc-400">
+              <span className="w-1.5 h-1.5 bg-white shrink-0" />
               <span>{isRtl ? 'الدمام • الخبر • الظهران • الجبيل • الأحساء • سلوى' : 'Dammam • Khobar • Dhahran • Jubail • Al-Ahsa • Salwa'}</span>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center mb-28 sm:mb-44">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-16 items-center mb-16 sm:mb-44">
           
-          <div className="lg:col-span-6 order-2 lg:order-1 space-y-6 lg:pr-4 rtl:lg:pr-0 rtl:lg:pl-4">
-            <div className="text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">
+          <div className="lg:col-span-6 order-2 lg:order-1 space-y-4 sm:space-y-6 lg:pr-4 rtl:lg:pr-0 rtl:lg:pl-4">
+            <div className="text-[11px] sm:text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">
               {isRtl ? 'كود البناء السعودي والجودة الإنشائية' : 'Saudi Building Code (SBC) & Vision 2030'}
             </div>
 
-            <div className={`text-base sm:text-lg lg:text-2xl text-zinc-300 font-light ${
-              isRtl ? 'font-arabic leading-[2.2]' : 'font-sans leading-relaxed'
+            <div className={`text-sm sm:text-lg lg:text-2xl text-zinc-300 font-light ${
+              isRtl ? 'font-arabic leading-[2.0] sm:leading-[2.2]' : 'font-sans leading-relaxed'
             }`}>
               {words2.map((word, idx) => {
                 const total = words2.length;
@@ -184,8 +183,8 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
               })}
             </div>
 
-            <div className="pt-2 flex items-center space-x-3 rtl:space-x-reverse text-xs sm:text-sm font-mono text-zinc-400">
-              <span className="w-1.5 h-1.5 bg-white" />
+            <div className="pt-2 flex items-center space-x-2 sm:space-x-3 rtl:space-x-reverse text-[11px] sm:text-sm font-mono text-zinc-400">
+              <span className="w-1.5 h-1.5 bg-white shrink-0" />
               <span>{isRtl ? 'امتثال كود SBC • اختبارات ضبط الجودة QA/QC • أمان تام' : 'SBC Codes • QA/QC Testing • Zero-Harm Safety'}</span>
             </div>
           </div>
@@ -194,7 +193,7 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
             style={{ y: imageParallax2 }}
             className="lg:col-span-6 order-1 lg:order-2"
           >
-            <div className="relative aspect-[16/11] sm:aspect-[16/10] overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl group select-none">
+            <div className="relative aspect-[16/11] sm:aspect-[16/10] rounded-xl sm:rounded-none overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl group select-none">
               <div className="absolute top-2.5 left-2.5 text-xs font-mono text-zinc-600 group-hover:text-white transition-colors duration-500 z-20 pointer-events-none select-none">+</div>
               <div className="absolute top-2.5 right-2.5 text-xs font-mono text-zinc-600 group-hover:text-white transition-colors duration-500 z-20 pointer-events-none select-none">+</div>
               <div className="absolute bottom-2.5 left-2.5 text-xs font-mono text-zinc-600 group-hover:text-white transition-colors duration-500 z-20 pointer-events-none select-none">+</div>
@@ -214,7 +213,7 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-20 sm:mb-28">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8 mb-14 sm:mb-28">
           {pillars.map((pillar, idx) => (
             <motion.div
               key={idx}
@@ -222,13 +221,13 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: idx * 0.12 }}
-              className="p-7 sm:p-8 bg-zinc-950/80 border border-zinc-900 hover:border-zinc-700 transition-colors duration-300 space-y-3 relative group"
+              className="p-5 sm:p-8 rounded-xl sm:rounded-none bg-zinc-950/80 border border-zinc-900 hover:border-zinc-700 transition-colors duration-300 space-y-2.5 sm:space-y-3 relative group"
             >
               <div className="text-xs font-mono font-bold text-zinc-500">
                 {pillar.num}
               </div>
 
-              <h3 className={`text-lg sm:text-xl font-bold text-white ${isRtl ? 'font-arabic' : 'font-heading uppercase tracking-tight'}`}>
+              <h3 className={`text-base sm:text-xl font-bold text-white ${isRtl ? 'font-arabic' : 'font-heading uppercase tracking-tight'}`}>
                 {isRtl ? pillar.titleAr : pillar.titleEn}
               </h3>
 
@@ -242,7 +241,7 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
         {/* 🌟 4 Clean Architectural Metric Columns with Parallax Lift */}
         <motion.div 
           style={{ y: parallaxStats }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 pt-12 border-t border-zinc-900"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-10 pt-8 sm:pt-12 border-t border-zinc-900"
         >
           {STATS.map((stat, i) => (
             <motion.div
@@ -251,12 +250,12 @@ export const AboutMinimal: React.FC<AboutMinimalProps> = ({ currentLang }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="space-y-1.5 border-l border-zinc-900 pl-6 rtl:border-l-0 rtl:border-r rtl:pr-6"
+              className="space-y-1 sm:space-y-1.5 border-l border-zinc-900 pl-3 sm:pl-6 rtl:border-l-0 rtl:border-r rtl:pr-3 rtl:sm:pr-6"
             >
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-heading font-black text-white tracking-tight">
+              <div className="text-xl sm:text-3xl lg:text-4xl font-heading font-black text-white tracking-tight">
                 {stat.value}
               </div>
-              <div className={`text-xs sm:text-sm text-zinc-400 font-light tracking-wide ${isRtl ? 'font-arabic leading-snug' : 'font-sans'}`}>
+              <div className={`text-[11px] sm:text-sm text-zinc-400 font-light tracking-wide ${isRtl ? 'font-arabic leading-snug' : 'font-sans'}`}>
                 {isRtl ? stat.labelAr : stat.label}
               </div>
             </motion.div>

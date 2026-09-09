@@ -178,7 +178,7 @@ export const ContactMinimal: React.FC<ContactMinimalProps> = ({ currentLang, onO
                     type="submit"
                     className="px-6 py-3 rounded-xl bg-white text-black hover:bg-zinc-200 font-medium text-xs uppercase tracking-wider flex items-center space-x-2 rtl:space-x-reverse transition-all shadow-lg active:scale-95 cursor-pointer"
                   >
-                    <Send className="w-3.5 h-3.5" />
+                    <Send className={`w-3.5 h-3.5 ${isRtl ? 'scale-x-[-1]' : ''}`} />
                     <span>{currentLang === 'ar' ? 'إرسال الاستفسار عبر البريد' : 'Submit Inquiry via Email'}</span>
                   </button>
 
@@ -213,7 +213,7 @@ export const ContactMinimal: React.FC<ContactMinimalProps> = ({ currentLang, onO
                   className="text-[10px] text-zinc-400 hover:text-white flex items-center space-x-1 rtl:space-x-reverse transition-colors"
                 >
                   <span>{currentLang === 'ar' ? 'خرائط Google' : 'Google Maps'}</span>
-                  <ArrowUpRight className="w-3 h-3" />
+                  <ArrowUpRight className={`w-3 h-3 ${isRtl ? 'rotate-[-90deg]' : ''}`} />
                 </a>
               </div>
 
@@ -254,7 +254,7 @@ export const ContactMinimal: React.FC<ContactMinimalProps> = ({ currentLang, onO
                     <div className="text-zinc-500 uppercase text-[9px] tracking-wider">WhatsApp Direct</div>
                     <a href={COMPANY.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:text-white transition-colors flex items-center space-x-1 rtl:space-x-reverse text-xs font-sans font-light mt-0.5">
                       <span>{currentLang === 'ar' ? 'محادثة فورية مع المستشار' : 'Chat with Engineering Team'}</span>
-                      <ArrowUpRight className="w-3 h-3" />
+                      <ArrowUpRight className={`w-3 h-3 ${isRtl ? 'rotate-[-90deg]' : ''}`} />
                     </a>
                   </div>
                 </div>
@@ -265,7 +265,7 @@ export const ContactMinimal: React.FC<ContactMinimalProps> = ({ currentLang, onO
                     <div className="text-zinc-500 uppercase text-[9px] tracking-wider">Instagram</div>
                     <a href={COMPANY.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:text-white transition-colors flex items-center space-x-1 rtl:space-x-reverse text-xs font-sans font-light mt-0.5">
                       <span>@tameer_almesaha_contracting</span>
-                      <ArrowUpRight className="w-3 h-3" />
+                      <ArrowUpRight className={`w-3 h-3 ${isRtl ? 'rotate-[-90deg]' : ''}`} />
                     </a>
                   </div>
                 </div>

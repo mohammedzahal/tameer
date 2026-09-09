@@ -53,14 +53,14 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang }) => {
   const isRtl = currentLang === 'ar';
 
   return (
-    <section className="relative min-h-[85vh] flex flex-col items-center justify-start pt-4 sm:pt-6 pb-16 bg-transparent overflow-hidden select-none">
+    <section className="relative min-h-[85vh] flex flex-col items-center justify-start pt-2 sm:pt-6 pb-12 sm:pb-16 bg-transparent overflow-hidden select-none">
       {/* Subtle Ambient Radial Light */}
       <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b from-zinc-900/20 via-zinc-950/10 to-transparent pointer-events-none z-0" />
 
       {/* Spacing for the Floating Emblem */}
-      <div className="h-[360px] sm:h-[385px] md:h-[405px] w-full flex items-center justify-center pointer-events-none select-none" />
+      <div className="h-[310px] sm:h-[385px] md:h-[405px] w-full flex items-center justify-center pointer-events-none select-none" />
 
-      <div className="relative max-w-4xl mx-auto px-6 text-center z-10 flex flex-col items-center mt-2 w-full">
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center z-10 flex flex-col items-center mt-1 sm:mt-2 w-full">
         {/* Company Title & Statement */}
         <motion.div
           style={{ 
@@ -71,11 +71,11 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang }) => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-4 max-w-3xl mx-auto w-full"
+          className="space-y-3 sm:space-y-4 max-w-3xl mx-auto w-full"
         >
           {/* Headline Container with Fixed Height & 3D Perspective */}
           <div 
-            className="min-h-[84px] sm:min-h-[105px] md:min-h-[120px] flex items-center justify-center relative w-full"
+            className="min-h-[72px] sm:min-h-[105px] md:min-h-[120px] flex items-center justify-center relative w-full"
             style={{ perspective: '1000px' }}
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -89,11 +89,11 @@ export const HeroMinimal: React.FC<HeroMinimalProps> = ({ currentLang }) => {
                 className="w-full text-center"
               >
                 {isRtl ? (
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.85rem] font-arabic font-black text-white leading-[1.45] sm:leading-[1.55]">
+                  <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-[2.85rem] font-arabic font-black text-white leading-[1.4] sm:leading-[1.55]">
                     ريادة في البناء • تميز في الإنجاز
                   </h1>
                 ) : (
-                  <h1 className="text-2xl sm:text-3xl md:text-[2.6rem] lg:text-[3.0rem] font-heading font-black tracking-tight text-white uppercase leading-[1.3] sm:leading-[1.35]">
+                  <h1 className="text-xl sm:text-3xl md:text-[2.6rem] lg:text-[3.0rem] font-heading font-black tracking-tight text-white uppercase leading-[1.25] sm:leading-[1.35]">
                     <span className="block">ARCHITECTURE. ENGINEERING.</span>
                     <span className="block text-zinc-200 mt-1 sm:mt-1.5">CONSTRUCTION.</span>
                   </h1>

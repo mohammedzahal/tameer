@@ -9,6 +9,13 @@ export const CustomCursor: React.FC<CustomCursorProps> = () => {
   const [isPointer, setIsPointer] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsTouchDevice(window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+    }
+  }, []);
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -52,10 +59,12 @@ export const CustomCursor: React.FC<CustomCursorProps> = () => {
     };
   }, [isVisible]);
 
+  if (isTouchDevice) return null;
+
   return (
     <div 
       dir="ltr"
-      className="fixed inset-0 pointer-events-none z-[999999] overflow-hidden"
+      className="hidden md:block fixed inset-0 pointer-events-none z-[999999] overflow-hidden"
       style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 0.2s ease-out' }}
     >
       {/* 🌟 Direct Hardware-Accelerated Circle Cursor (Instant 0ms sync with mouse & dispersion center) */}

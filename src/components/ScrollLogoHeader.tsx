@@ -15,7 +15,7 @@ interface ScrollLogoHeaderProps {
 export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
   currentLang,
   isScrolled,
-  isNavHidden: _isNavHidden,
+  isNavHidden,
   introFinished = true,
   onToggleLang,
   onOpenRfp,
@@ -47,10 +47,13 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
         initial={{ opacity: 0, y: -12 }}
         animate={{ 
-          opacity: introFinished ? 1 : 0, 
-          y: introFinished ? 0 : -12 
+          opacity: introFinished ? (isNavHidden ? 0 : 1) : 0, 
+          y: introFinished ? (isNavHidden ? -100 : 0) : -12 
         }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ 
+          duration: isNavHidden ? 0.25 : 0.35, 
+          ease: [0.16, 1, 0.3, 1] 
+        }}
         style={{
           backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.92)' : 'transparent',
           borderBottom: isScrolled ? '1px solid rgba(63, 63, 70, 0.4)' : '1px solid transparent',
@@ -58,64 +61,23 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
           transition: 'background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease',
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-24 flex items-center justify-between">
           
-          {/* Target Slot for Docked Emblem + Companion Brand Name */}
-          <motion.div 
-            layout
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          {/* Target Slot for Docked Emblem */}
+          <div 
             onClick={scrollToTop}
-            className="flex items-center cursor-pointer pointer-events-auto group select-none h-20 sm:h-24 relative z-30"
+            className="flex items-center cursor-pointer pointer-events-auto group select-none h-16 sm:h-24 relative z-30"
             title="TAMEER Group - Click to return to top"
           >
             {/* Spacer reserved for the docked emblem */}
-            <div className="w-[58px] sm:w-[70px] shrink-0" />
-
-            {/* Brand Title slides in beside the docked emblem */}
-            <motion.div
-              layout
-              animate={{
-                opacity: isScrolled ? 1 : 0,
-                x: isScrolled ? 0 : (isRtl ? 10 : -10),
-              }}
-              transition={{
-                duration: 0.45,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className={`flex flex-col select-none ${isRtl ? 'mr-2 text-right' : 'ml-2 text-left'}`}
-            >
-              <div dir="ltr" className="flex items-center space-x-2 font-display text-sm sm:text-base">
-                <span className="font-medium tracking-[0.2em] text-white group-hover:text-zinc-200 transition-colors uppercase">
-                  TAMEER
-                </span>
-                <span className="font-light text-zinc-400 lowercase text-xs sm:text-sm">
-                  group
-                </span>
-              </div>
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={`brand-sub-${currentLang}`}
-                  initial={{ opacity: 0, x: isRtl ? 8 : -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: isRtl ? -8 : 8 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-[10px] sm:text-xs text-zinc-400 font-arabic tracking-wider uppercase inline-block"
-                >
-                  {currentLang === 'ar' ? COMPANY.fullNameAr : 'Kingdom of Saudi Arabia'}
-                </motion.span>
-              </AnimatePresence>
-            </motion.div>
-          </motion.div>
+            <div className="w-[48px] sm:w-[70px] h-full shrink-0" />
+          </div>
 
           {/* Desktop Navigation Links (Enlarged & Clearer with Swoosh) */}
-          <motion.nav
-            layout
-            animate={{ opacity: isScrolled ? 1 : 0 }}
-            transition={{ 
-              layout: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
-              opacity: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } 
-            }}
-            className="hidden md:flex items-center space-x-10 rtl:space-x-reverse pointer-events-auto"
+          <nav
+            className={`hidden md:flex items-center space-x-10 rtl:space-x-reverse pointer-events-auto transition-opacity duration-300 ${
+              isScrolled ? 'opacity-100' : 'opacity-0'
+            }`}
           >
             {navLinks.map((link) => (
               <a
@@ -138,10 +100,10 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
                 <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-white group-hover:w-full transition-all duration-300" />
               </a>
             ))}
-          </motion.nav>
+          </nav>
 
           {/* Controls Container (Always On Screen, High-End Glassmorphism & Fast Accessibility) */}
-          <div className="flex items-center space-x-2.5 rtl:space-x-reverse pointer-events-auto">
+          <div className="flex items-center space-x-2 sm:space-x-2.5 rtl:space-x-reverse pointer-events-auto">
             {/* WhatsApp */}
             <a
               href={COMPANY.whatsappUrl}
@@ -150,7 +112,7 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
               className="p-2 sm:p-2.5 rounded-full border border-zinc-800 bg-zinc-950/80 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-900 transition-all shadow-sm"
               title="WhatsApp"
             >
-              <MessageSquare className="w-4 h-4" />
+              <MessageSquare className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
             </a>
 
             {/* Instagram */}
@@ -167,11 +129,11 @@ export const ScrollLogoHeader: React.FC<ScrollLogoHeaderProps> = ({
             {/* 🌟 Prominent, Always-Visible Dual-Language Switch Pill */}
             <button
               onClick={(e) => onToggleLang(e)}
-              className="group flex items-center space-x-1.5 rtl:space-x-reverse px-3 sm:px-3.5 py-1.5 rounded-full border border-zinc-700/80 hover:border-zinc-400 bg-zinc-950/90 text-xs sm:text-sm font-mono text-zinc-200 hover:text-white transition-all shadow-md active:scale-95 cursor-pointer backdrop-blur-md"
+              className="group flex items-center space-x-1 sm:space-x-1.5 rtl:space-x-reverse px-2.5 sm:px-3.5 py-1.5 rounded-full border border-zinc-700/80 hover:border-zinc-400 bg-zinc-950/90 text-[11px] sm:text-sm font-mono text-zinc-200 hover:text-white transition-all shadow-md active:scale-95 cursor-pointer backdrop-blur-md"
               title={currentLang === 'ar' ? 'Switch to English' : 'التحويل إلى العربية'}
             >
-              <Globe className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors shrink-0" />
-              <div className="flex items-center text-[11px] font-mono tracking-wider select-none">
+              <Globe className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-zinc-400 group-hover:text-white transition-colors shrink-0" />
+              <div className="flex items-center text-[10px] sm:text-[11px] font-mono tracking-wider select-none">
                 <span className={`px-1.5 py-0.5 rounded transition-all ${currentLang === 'ar' ? 'bg-white text-black font-semibold shadow-sm' : 'text-zinc-400 hover:text-zinc-200'}`}>
                   عربي
                 </span>

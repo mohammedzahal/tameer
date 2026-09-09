@@ -84,7 +84,7 @@ const ServiceCard3D: React.FC<ServiceCard3DProps> = ({
           transformStyle: 'preserve-3d',
           transformPerspective: 1400,
         }}
-        className="w-full max-w-6xl rounded-3xl bg-zinc-950/90 backdrop-blur-2xl p-4 sm:p-6 md:p-8 shadow-[0_30px_100px_-15px_rgba(0,0,0,1),0_0_60px_rgba(255,255,255,0.04)] select-none group relative overflow-hidden transition-shadow duration-500"
+        className="w-full max-w-6xl rounded-2xl sm:rounded-3xl bg-zinc-950/90 backdrop-blur-2xl p-3 sm:p-6 md:p-8 shadow-[0_30px_100px_-15px_rgba(0,0,0,1),0_0_60px_rgba(255,255,255,0.04)] select-none group relative overflow-hidden transition-shadow duration-500"
       >
         {/* Dynamic Specular Sheen Glare */}
         <motion.div
@@ -98,11 +98,11 @@ const ServiceCard3D: React.FC<ServiceCard3DProps> = ({
         <div className="absolute top-0 right-0 w-80 h-80 bg-white/[0.02] rounded-full blur-3xl pointer-events-none group-hover:bg-white/[0.05] transition-colors duration-700" />
 
         {/* 🌟 2-Column Responsive Showcase Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-7 lg:gap-9 items-center relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-7 lg:gap-9 items-center relative z-10">
           
           {/* Column 1: Grand 3D Architectural Image (7 Cols) */}
           <div className="lg:col-span-7 order-1 lg:order-none">
-            <div className="relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl group/img">
+            <div className="relative aspect-[16/9] sm:aspect-[16/9] lg:aspect-[16/10] max-h-[165px] sm:max-h-none rounded-xl sm:rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl group/img">
               <motion.div
                 initial={{ scale: 1.15 }}
                 animate={{ scale: 1.05 }}
@@ -121,13 +121,13 @@ const ServiceCard3D: React.FC<ServiceCard3DProps> = ({
               <div className="absolute inset-0 bg-black/15 pointer-events-none z-[1]" />
 
               {/* Floating Top HUD Pills */}
-              <div className="absolute top-3 sm:top-4 inset-x-3 sm:inset-x-4 flex items-center justify-between z-10">
-                <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase bg-black/65 backdrop-blur-xl text-zinc-200 shadow-lg flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <div className="absolute top-2 sm:top-4 inset-x-2.5 sm:inset-x-4 flex items-center justify-between z-10">
+                <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-mono font-bold tracking-wider uppercase bg-black/65 backdrop-blur-xl text-zinc-200 shadow-lg flex items-center gap-1 sm:gap-1.5">
+                  <CheckCircle2 className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-emerald-400" />
                   <span>{currentLang === 'ar' ? 'معتمد وفق الكود السعودي' : 'SBC Certified Execution'}</span>
                 </span>
 
-                <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono font-black tracking-widest uppercase bg-white text-black shadow-xl">
+                <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-mono font-black tracking-widest uppercase bg-white text-black shadow-xl">
                   {service.num} / {String(total).padStart(2, '0')}
                 </span>
               </div>
@@ -135,24 +135,24 @@ const ServiceCard3D: React.FC<ServiceCard3DProps> = ({
           </div>
 
           {/* Column 2: Information & Engineering Scope Details (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-3 sm:space-y-4 order-2 lg:order-none">
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-2 sm:space-y-4 order-2 lg:order-none">
             
-            <div className="space-y-2.5 sm:space-y-3.5">
+            <div className="space-y-1.5 sm:space-y-3.5">
               {/* Giant Ghost Watermark Number */}
               <div className="flex items-center justify-between">
-                <span className="text-4xl sm:text-5xl lg:text-6xl font-heading font-black text-zinc-700/60 group-hover:text-zinc-500 transition-colors duration-500 tracking-tighter">
+                <span className="text-2xl sm:text-5xl lg:text-6xl font-heading font-black text-zinc-700/60 group-hover:text-zinc-500 transition-colors duration-500 tracking-tighter">
                   {service.num}
                 </span>
 
-                <div className="inline-flex items-center space-x-1.5 rtl:space-x-reverse px-3 py-1 rounded-full bg-zinc-900/80 backdrop-blur-md text-zinc-300 text-[11px] font-mono shadow-sm">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <div className="inline-flex items-center space-x-1 sm:space-x-1.5 rtl:space-x-reverse px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-zinc-900/80 backdrop-blur-md text-zinc-300 text-[10px] sm:text-[11px] font-mono shadow-sm">
+                  <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-amber-400" />
                   <span>{currentLang === 'ar' ? 'قطاع مقاولات رئيسي' : 'Core Discipline'}</span>
                 </div>
               </div>
 
               {/* Discipline Title */}
               <h3
-                className={`text-lg sm:text-xl lg:text-2xl font-black text-white group-hover:text-zinc-100 transition-colors uppercase leading-snug ${
+                className={`text-sm sm:text-xl lg:text-2xl font-black text-white group-hover:text-zinc-100 transition-colors uppercase leading-tight ${
                   isRtl ? 'font-arabic font-black' : 'font-heading tracking-tight'
                 }`}
               >
@@ -161,8 +161,8 @@ const ServiceCard3D: React.FC<ServiceCard3DProps> = ({
 
               {/* Narrative Description */}
               <p
-                className={`text-xs sm:text-sm text-zinc-300 leading-relaxed font-light ${
-                  isRtl ? 'font-arabic leading-[1.8]' : 'font-sans'
+                className={`text-[11px] sm:text-sm text-zinc-300 leading-relaxed font-light line-clamp-3 sm:line-clamp-none ${
+                  isRtl ? 'font-arabic leading-[1.7] sm:leading-[1.8]' : 'font-sans'
                 }`}
               >
                 {currentLang === 'ar' ? service.descAr : service.desc}
@@ -170,13 +170,15 @@ const ServiceCard3D: React.FC<ServiceCard3DProps> = ({
             </div>
 
             {/* Tags & Action Buttons */}
-            <div className="space-y-3 pt-1">
+            <div className="space-y-2 sm:space-y-3 pt-0.5 sm:pt-1">
               {/* Capabilities & Tags */}
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              <div className="flex flex-wrap gap-1 sm:gap-2">
                 {(currentLang === 'ar' ? service.tagsAr : service.tags).map((tag, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 rounded-full bg-zinc-900/70 hover:bg-zinc-800/80 backdrop-blur-md text-zinc-300 text-[11px] sm:text-xs font-mono font-medium shadow-sm transition-colors"
+                    className={`px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-zinc-900/70 hover:bg-zinc-800/80 backdrop-blur-md text-zinc-300 text-[10px] sm:text-xs font-mono font-medium shadow-sm transition-colors ${
+                      idx > 2 ? 'hidden sm:inline-flex' : 'inline-flex'
+                    }`}
                   >
                     {tag}
                   </span>
@@ -185,13 +187,13 @@ const ServiceCard3D: React.FC<ServiceCard3DProps> = ({
 
               {/* Direct Inquiry Action Trigger */}
               {onOpenRfp && (
-                <div className="pt-1">
+                <div className="pt-0.5 sm:pt-1">
                   <button
                     onClick={() => onOpenRfp(currentLang === 'ar' ? service.titleAr : service.title)}
-                    className="w-full sm:w-auto px-5 py-2 rounded-full bg-white hover:bg-zinc-200 text-black text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 shadow-xl flex items-center justify-center space-x-2 rtl:space-x-reverse cursor-pointer group/btn"
+                    className="w-full sm:w-auto px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-white hover:bg-zinc-200 text-black text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 shadow-xl flex items-center justify-center space-x-1.5 sm:space-x-2 rtl:space-x-reverse cursor-pointer group/btn"
                   >
                     <span>{currentLang === 'ar' ? 'طلب تسعير ومواصفات فنية' : 'Request Discipline RFP'}</span>
-                    <Send className={`w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 ${isRtl ? 'rotate-[180deg]' : ''}`} />
+                    <Send className={`w-3.5 h-3.5 transition-transform ${isRtl ? 'scale-x-[-1] group-hover/btn:-translate-x-0.5 group-hover/btn:-translate-y-0.5' : 'group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5'}`} />
                   </button>
                 </div>
               )}
@@ -478,35 +480,33 @@ export const ServicesMinimal: React.FC<ServicesMinimalProps> = ({ currentLang, o
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
-        if (isRtl) handleNext();
-        else handlePrev();
+        handlePrev();
       } else if (e.key === 'ArrowRight') {
-        if (isRtl) handlePrev();
-        else handleNext();
+        handleNext();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNext, handlePrev, isRtl]);
+  }, [handleNext, handlePrev]);
 
   return (
     <section
       id="services"
       ref={containerRef}
-      className="h-screen max-h-[100dvh] pt-3 sm:pt-5 pb-3 sm:pb-4 bg-transparent text-white relative overflow-hidden select-none flex flex-col justify-between"
+      className="h-screen max-h-[100dvh] pt-2 sm:pt-5 pb-2 sm:pb-4 bg-transparent text-white relative overflow-hidden select-none flex flex-col justify-between"
     >
       {/* 🌟 Atmospheric Dynamic Ambient Lighting */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-zinc-800/15 blur-[170px] pointer-events-none rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full h-full flex flex-col justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10 w-full h-full flex flex-col justify-between">
         
         {/* 🌟 Section Header with Category Stepper Navigation & Tactile Arrows */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-2 gap-2 shrink-0">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-1 sm:pb-2 gap-1.5 sm:gap-2 shrink-0">
           <div className="space-y-0.5">
             <div
               className={`flex items-center space-x-2 rtl:space-x-reverse ${
-                isRtl ? 'text-[11px] font-arabic font-semibold text-zinc-400' : 'text-[11px] font-mono font-bold text-zinc-400 uppercase tracking-[0.25em]'
+                isRtl ? 'text-[10px] sm:text-[11px] font-arabic font-semibold text-zinc-400' : 'text-[10px] sm:text-[11px] font-mono font-bold text-zinc-400 uppercase tracking-[0.25em]'
               }`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
@@ -516,8 +516,8 @@ export const ServicesMinimal: React.FC<ServicesMinimalProps> = ({ currentLang, o
             <h2
               className={
                 isRtl
-                  ? 'text-base sm:text-lg lg:text-xl font-arabic font-black text-white leading-tight'
-                  : 'text-lg sm:text-xl lg:text-2xl font-heading font-black text-white tracking-tight uppercase leading-tight'
+                  ? 'text-sm sm:text-lg lg:text-xl font-arabic font-black text-white leading-tight'
+                  : 'text-base sm:text-xl lg:text-2xl font-heading font-black text-white tracking-tight uppercase leading-tight'
               }
             >
               {currentLang === 'ar' ? 'حلول هندسية متكاملة وفق أعلى المعايير' : 'Integrated Contracting & Engineering'}
@@ -525,16 +525,16 @@ export const ServicesMinimal: React.FC<ServicesMinimalProps> = ({ currentLang, o
           </div>
 
           {/* Stepper Controls: Quick Jump Buttons & Tactile Arrows */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             {/* Stepper Pills */}
-            <div className="flex items-center space-x-1 rtl:space-x-reverse bg-zinc-900/60 backdrop-blur-md p-1 rounded-full shadow-md">
+            <div dir="ltr" className="flex items-center space-x-0.5 sm:space-x-1 bg-zinc-900/60 backdrop-blur-md p-0.5 sm:p-1 rounded-full shadow-md">
               {CORE_SERVICES.map((s, idx) => {
                 const isActive = idx === currentIndex;
                 return (
                   <button
                     key={s.num}
                     onClick={() => handleSelectDiscipline(idx)}
-                    className={`relative px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono font-bold transition-all duration-300 cursor-pointer ${
+                    className={`relative px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[11px] font-mono font-bold transition-all duration-300 cursor-pointer ${
                       isActive ? 'text-black font-black' : 'text-zinc-400 hover:text-white'
                     }`}
                   >
@@ -552,18 +552,18 @@ export const ServicesMinimal: React.FC<ServicesMinimalProps> = ({ currentLang, o
             </div>
 
             {/* Tactile Previous / Next Buttons */}
-            <div className="flex items-center space-x-1 rtl:space-x-reverse rounded-full p-0.5 bg-zinc-900/70 backdrop-blur-md shadow-md">
+            <div dir="ltr" className="flex items-center space-x-1 rounded-full p-0.5 bg-zinc-900/70 backdrop-blur-md shadow-md">
               <button
-                onClick={isRtl ? handleNext : handlePrev}
+                onClick={handlePrev}
                 className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer"
-                title={isRtl ? 'التالي' : 'Previous'}
+                title={currentLang === 'ar' ? 'السابق' : 'Previous'}
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
               <button
-                onClick={isRtl ? handlePrev : handleNext}
+                onClick={handleNext}
                 className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer"
-                title={isRtl ? 'السابق' : 'Next'}
+                title={currentLang === 'ar' ? 'التالي' : 'Next'}
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -604,7 +604,7 @@ export const ServicesMinimal: React.FC<ServicesMinimalProps> = ({ currentLang, o
           </div>
 
           {/* Interactive Progress Segments */}
-          <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
+          <div dir="ltr" className="flex items-center space-x-1.5">
             {CORE_SERVICES.map((_, idx) => {
               const isActive = idx === currentIndex;
               return (
